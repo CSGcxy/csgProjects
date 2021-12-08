@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.netsegservice.mapper.NetworksegmentMapper">
+    <select id="selectNetSeg" resultType="java.lang.String">
+        select DISTINCT NETWORKSEG
+        FROM networksegment
+        ORDER BY NETWORKSEG
+    </select>
+
+    <select id="selectNetworkSegmentTerminalTotal" resultType="com.cxy.netsegservice.entity.vo.NetSegTotalVO">
+        SELECT NETWORKSEG,UPBYTES,DOWNBYTES,UPRATE,DOWNRATE,Alert_flow as alertFlow,ONDEVICECOUNT,OFFDEVICECOUNT,Active_Flow_Count as activeFlowCount
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM networksegment)
+    </select>
+
+    <select id="selectSegCommStatus" resultType="com.cxy.netsegservice.entity.vo.SegCommStatusVO">
+        SELECT IP,LOCATION,FLOWS,NAME,TotalRecvBytes,TotalBytes,RATES,LastSeen
+        FROM ${segment} WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment}) ORDER BY RATES LIMIT 5
+    </select>
+
+    <select id="getTerminalTrendStatus" resultType="com.cxy.netsegservice.entity.TerminalTrend">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp,UPRATE,DOWNRATE,ONDEVICECOUNT from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM networksegment)-3600000 ORDER BY TIMESTAMP
+    </select>
+
+    <select id="selectLocation" resultType="com.cxy.netsegservice.entity.Location">
+        SELECT LOCATION,COUNT(LOCATION) as count from ${segment}
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-3600000
+        GROUP BY LOCATION
+    </select>
+
+</mapper>
