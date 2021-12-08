@@ -25,7 +25,7 @@
         <java.version>1.8</java.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <cloud-alibaba.version>0.2.2.RELEASE</cloud-alibaba.version>
-        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <velocity.version>2.0</velocity.version>
         <swagger.version>2.7.0</swagger.version>
         <lombok.version>1.18.20</lombok.version>
@@ -50,20 +50,10 @@
                 <scope>import</scope>
             </dependency>
 
-            <!--mybatis-plus 持久层-->
+            <!--mybatis-plus-->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-generator</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-core</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-annotation</artifactId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
