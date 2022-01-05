@@ -1,6 +1,7 @@
 package com.cxy.netsegservice.mapper;
 
 import com.cxy.netsegservice.entity.Location;
+import com.cxy.netsegservice.entity.NetSegTotalBytes;
 import com.cxy.netsegservice.entity.Networksegment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cxy.netsegservice.entity.TerminalTrend;
@@ -31,4 +32,8 @@ public interface NetworksegmentMapper extends BaseMapper<Networksegment> {
     List<TerminalTrend> getTerminalTrendStatus(String segment);
 
     List<Location> selectLocation(@Param("segment") String segment);
+
+    List<NetSegTotalBytes> getSegTotalBytes(@Param("segment") String segment);
+
+    List<Networksegment> getAlertFlow();
 }

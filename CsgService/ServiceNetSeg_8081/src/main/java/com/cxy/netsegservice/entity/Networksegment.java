@@ -49,5 +49,7 @@ public class Networksegment implements Serializable {
     @TableField("Active_Flow_Count")
     private Integer activeFlowCount;
 
+    private Integer totalbytes;
+
 
 }
