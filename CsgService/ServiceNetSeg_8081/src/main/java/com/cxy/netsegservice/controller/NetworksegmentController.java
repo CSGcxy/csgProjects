@@ -55,6 +55,7 @@ public class NetworksegmentController {
      */
     @GetMapping("/getNetworkSegmentTerminalTotal/{segment}")
     public R getNetworkSegmentTerminalTotal(@PathVariable String segment) {
+        System.out.println(segment);
         List<NetSegTotalVO> NetSegTotal = networksegmentService.selectNetworkSegmentTerminalTotal(segment);
         return R.ok().data("NetSegTotal", NetSegTotal);
     }
@@ -78,6 +79,7 @@ public class NetworksegmentController {
     @ApiOperation(value = "根据网段名segment查询终端通信情况")
     @GetMapping("/getSegCommStatus/{segment}")
     public R getSegCommStatus(@PathVariable String segment) {
+        System.out.println(segment);
         List<SegCommStatusVO> segCommStatusVOList = networksegmentService.getSegCommStatus(segment);
         return R.ok().data("segCommStatusList", segCommStatusVOList);
     }

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class FlowSankey {
-    private String SRC_IP;
-    private String DST_IP;
-    private Integer BYTE_COUNT;
+    private String srcIp;
+    private String dstIp;
+    private Integer byteCount;
 }

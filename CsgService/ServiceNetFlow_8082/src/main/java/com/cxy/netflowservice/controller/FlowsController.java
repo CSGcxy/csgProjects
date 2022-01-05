@@ -32,16 +32,17 @@ public class FlowsController {
     private FlowsService flowsService;
 
     @ApiOperation(value = "查询活跃流")
-    @GetMapping("/getActiveFlows/(segment)")
-    public R getActiveFlows(@PathVariable String segment) {
+    @GetMapping("/getActiveFlows/{segment}")
+    public R getActiveFlows(@PathVariable("segment") String segment) {
+        System.out.println(segment);
         List<ActiveFlowsVO> activeFlowsVOList = flowsService.getActiveFlows(segment);
         return R.ok().data("activeFlowsList", activeFlowsVOList);
     }
 
     @ApiOperation(value = "查询网段整体桑基图")
-    @GetMapping("/getFlowSankey")
-    public R getFlowSankey() {
-        FlowSankeyVO flowSankeyVOList = flowsService.getFlowSankey();
+    @GetMapping("/getFlowSankey/{segment}")
+    public R getFlowSankey(@PathVariable("segment") String segment) {
+        FlowSankeyVO flowSankeyVOList = flowsService.getFlowSankey(segment);
         return R.ok().data("flowSankeyVOList",flowSankeyVOList);
     }
 

@@ -19,5 +19,5 @@ public interface FlowsService extends IService<Flows> {
 
     List<ActiveFlowsVO> getActiveFlows(String segment);
 
-    FlowSankeyVO getFlowSankey();
+    FlowSankeyVO getFlowSankey(String segment);
 }

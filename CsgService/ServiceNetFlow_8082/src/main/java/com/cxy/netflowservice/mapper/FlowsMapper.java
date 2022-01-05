@@ -22,5 +22,5 @@ public interface FlowsMapper extends BaseMapper<Flows> {
 
     List<ActiveFlowsVO> getActiveFlows(@Param("segment") String segment);
 
-    List<FlowSankey> getFlowSankey();
+    List<FlowSankey> getFlowSankey(@Param("segment") String segment);
 }

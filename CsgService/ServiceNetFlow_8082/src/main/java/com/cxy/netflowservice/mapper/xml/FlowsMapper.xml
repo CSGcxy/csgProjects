@@ -3,13 +3,13 @@
 <mapper namespace="com.cxy.netflowservice.mapper.FlowsMapper">
 
     <select id="getActiveFlows" resultType="com.cxy.netflowservice.entity.vo.ActiveFlowsVO">
-        SELECT APP_PROTO,PROTO,SRC_IP,DST_IP,DURATION,FRONT_RATE,BACK_RATE,BYTE_COUNT
+        SELECT APP_PROTO as appProto,PROTO as proto,SRC_IP as srcIp,DST_IP as dstIp,DURATION as duration,FRONT_RATE as frontRate,BACK_RATE as backRate,BYTE_COUNT as byteCount
         FROM ${segment} WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP ) FROM ${segment}) LIMIT 6
     </select>
 
     <select id="getFlowSankey" resultType="com.cxy.netflowservice.entity.FlowSankey">
-        SELECT SRC_IP, DST_IP, BYTE_COUNT
-        FROM Flows ORDER BY BYTE_COUNT DESC LIMIT 10
+        SELECT SRC_IP as srcIp, DST_IP as dstIp, BYTE_COUNT as byteCount
+        FROM ${segment} ORDER BY BYTE_COUNT DESC LIMIT 10
     </select>
 
 

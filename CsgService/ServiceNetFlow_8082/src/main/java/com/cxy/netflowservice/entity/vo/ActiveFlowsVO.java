@@ -6,12 +6,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ActiveFlowsVO {
-    private String APP_PROTO;
-    private String PROTO;
-    private String SRC_IP;
-    private String DST_IP;
-    private String DURATION;
-    private double FRONT_RATE;
-    private double BACK_RATE;
-    private Integer BYTE_COUNT;
+    private String appProto;
+    private String proto;
+    private String srcIp;
+    private String dstIp;
+    private String duration;
+    private double frontRate;
+    private double backRate;
+    //private Integer byteCount;
+    private double byteCount;
 }
