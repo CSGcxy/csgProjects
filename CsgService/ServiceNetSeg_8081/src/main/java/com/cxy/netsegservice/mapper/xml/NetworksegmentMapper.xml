@@ -28,5 +28,15 @@
         WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-3600000
         GROUP BY LOCATION
     </select>
+    <select id="getSegTotalBytes" resultType="com.cxy.netsegservice.entity.NetSegTotalBytes">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , UPBYTES + DOWNBYTES AS TotalBytes
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM networksegment)-3600000 ORDER BY TIMESTAMP
+    </select>
+    <select id="getAlertFlow" resultType="com.cxy.netsegservice.entity.Networksegment">
+        SELECT NETWORKSEG,UPBYTES,DOWNBYTES,UPRATE,DOWNRATE,Alert_flow as alertFlow,ONDEVICECOUNT,OFFDEVICECOUNT,Active_Flow_Count as activeFlowCount
+        from networksegment
+        WHERE Alert_flow > 0 ORDER BY TIMESTAMP LIMIT 10
+    </select>
 
 </mapper>

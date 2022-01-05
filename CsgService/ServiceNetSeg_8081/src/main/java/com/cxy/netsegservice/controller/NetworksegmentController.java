@@ -106,5 +106,16 @@ public class NetworksegmentController {
         return R.ok().data("mapList", mapList);
     }
 
+    /**
+     * 根据输入的参数  网段  返回该网段下的流数(总字节数 = 发送字节数 + 接收字节数)
+     * @param segment – 传入的网段
+     * @return  返回时刻 和 该时刻的总字节数
+     */
+    @GetMapping("/getSegTotalBytes/{segment}")
+    public R getSegTotalBytes(@PathVariable String segment) {
+        NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytes(segment);
+        return R.ok().data("netSegTotalBytesVO", netSegTotalBytesVO);
+    }
+
 }
 

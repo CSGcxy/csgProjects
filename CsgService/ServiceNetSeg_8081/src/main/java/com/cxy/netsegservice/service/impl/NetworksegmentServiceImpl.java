@@ -3,6 +3,7 @@ package com.cxy.netsegservice.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cxy.baseService.handler.CsgException;
 import com.cxy.netsegservice.entity.Location;
+import com.cxy.netsegservice.entity.NetSegTotalBytes;
 import com.cxy.netsegservice.entity.Networksegment;
 import com.cxy.netsegservice.entity.TerminalTrend;
 import com.cxy.netsegservice.entity.vo.*;
@@ -54,23 +55,31 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     //查询出告警流数出现的时间、IP及对应的流数
     @Override
     public List<AlertFlowVO> getAlertFlow() {
+        // 定义时间格式
         String format = "yyyy/MM/dd HH:mm:ss";
-        QueryWrapper<Networksegment> netSegWrapper = new QueryWrapper<>();
-        netSegWrapper.ge("Alert_flow", 0);
-        netSegWrapper.orderByDesc("TIMESTAMP");
-        netSegWrapper.last("limit 10");
-        List<Networksegment> networksegments = baseMapper.selectList(netSegWrapper);
+        // mybatis plus 条件构造器queryWrapper
+//        QueryWrapper<Networksegment> netSegWrapper = new QueryWrapper<>();
+//        netSegWrapper.ge("Alert_flow", 0);  // 告警流数Alert_flow > 0
+//        netSegWrapper.orderByDesc("TIMESTAMP"); // 以时间戳TIMESTAMP排序
+//        netSegWrapper.last("limit 10");          // 限制记录条数在10条以内
+//        List<Networksegment> networksegments = baseMapper.selectList(netSegWrapper); // 获取满足以上条件的10个网段 即网段内有告警流数 以时间顺序排序
+
+        List<Networksegment> networksegments = netSegMappper.getAlertFlow();
+        // 没有任何网段存在告警流,则报错"无告警流"
         if (networksegments == null) {
             throw new CsgException(20001, "无告警流");
         }
+        // 并非将告警流所在网段的所有信息都返回,而是构造一个新的返回体AlertFlowVO 选择性截取网段中的字段返回
         List<AlertFlowVO> alertFlowVOList = new ArrayList<>();
+        // 规范时间格式
         SimpleDateFormat sdf = new SimpleDateFormat(format);
+        // 对获得的告警流所在的10个网段遍历 将 网段 网段时间戳 网段的告警流数 三个字段逐一取出来放置到响应体List<AlertFlowVO>中
         for (Networksegment netSeg : networksegments) {
             AlertFlowVO alertFlowVO = new AlertFlowVO();
             //因为数据库存储的时间戳不是以Date类型存储的，而是Integer类型，所以这里需要将其格式化
-            alertFlowVO.setTimestamp(sdf.format(netSeg.getTimestamp()));
-            alertFlowVO.setNetworkseg(netSeg.getNetworkseg());
-            alertFlowVO.setAlertFlow(netSeg.getAlertFlow());
+            alertFlowVO.setTimestamp(sdf.format(netSeg.getTimestamp())); // 网段时间戳
+            alertFlowVO.setNetworkseg(netSeg.getNetworkseg());           // 网段
+            alertFlowVO.setAlertFlow(netSeg.getAlertFlow());             // 网段的告警流数
             alertFlowVOList.add(alertFlowVO);
         }
 
@@ -86,7 +95,8 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     //根据网段名segment查询对应网段下终端IP通信情况
     @Override
     public List<SegCommStatusVO> getSegCommStatus(String segment) {
-        return netSegMappper.selectSegCommStatus("networksegment_"+segment.replace(".","_"));
+//        return netSegMappper.selectSegCommStatus("networksegment_"+segment.replace(".","_"));
+        return netSegMappper.selectSegCommStatus(segment);
     }
 
     //根据网段名查询在线终端数量、下行速率、上行速率随时间变化情况
@@ -113,19 +123,40 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     public MapVO getlocation(String segment) {
         ArrayList<String> locs = new ArrayList<>();
         List<Integer> count = new ArrayList<>();
-        String[] patterns = new String[]{".*内网.*","密歇根.*"};
-        String segmentNet = "networksegment_" + segment.replace(".", "_");
+//        String[] patterns = new String[]{".*内网.*","密歇根.*"};
+//        String segmentNet = "networksegment_" + segment.replace(".", "_");
 
-        for (Location loc : netSegMappper.selectLocation(segmentNet)) {
-            if (Pattern.matches(patterns[0], loc.getLocation())) {
-                locs.add("广东");
-                count.add(loc.getCount());
-            } else {
-                locs.add("其他");
-                count.add(loc.getCount());
-            }
+        for (Location loc : netSegMappper.selectLocation(segment)) {
+            locs.add(loc.getLocation());
+            count.add(loc.getCount());
+//            if (Pattern.matches(patterns[0], loc.getLocation())) {
+//                locs.add("广东");
+//                count.add(loc.getCount());
+//            } else {
+//                locs.add("其他");
+//                count.add(loc.getCount());
+//            }
         }
         return new MapVO(locs, count);
+    }
+
+    //根据网段名查询过去一小时的终端IP地区分布情况
+    @Override
+    public NetSegTotalBytesVO getSegTotalBytes(String segment) {
+
+        List<NetSegTotalBytes> networksegments = netSegMappper.getSegTotalBytes(segment);
+        List<String> timestampList = new ArrayList<>();
+        List<Integer> totalBytesList = new ArrayList<>();
+
+        for (NetSegTotalBytes ns : networksegments) {
+            timestampList.add(ns.getTimestamp());
+            totalBytesList.add(ns.getTotalbytes());
+        }
+//        for (Networksegment networksegment : netSegMappper.getSegTotalBytes(segment)) {
+//            timestampList.add(networksegment.getTimestamp());
+//            totalBytesList.add(networksegment.getTotalbytes());
+//        }
+        return new NetSegTotalBytesVO(timestampList, totalBytesList);
     }
 
 

@@ -27,4 +27,6 @@ public interface NetworksegmentService extends IService<Networksegment> {
     TerminalTrendVO getTerminalTrendStatus(String segment);
 
     MapVO getlocation(String segment);
+
+    NetSegTotalBytesVO getSegTotalBytes(String segment);
 }
