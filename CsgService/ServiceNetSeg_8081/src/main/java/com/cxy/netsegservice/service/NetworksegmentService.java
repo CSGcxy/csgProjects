@@ -4,6 +4,7 @@ import com.cxy.netsegservice.entity.Networksegment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cxy.netsegservice.entity.vo.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -29,4 +30,6 @@ public interface NetworksegmentService extends IService<Networksegment> {
     MapVO getlocation(String segment);
 
     NetSegTotalBytesVO getSegTotalBytes(String segment);
+
+    NetSegTotalBytesVO getSegTotalBytesByTime(String segment, long time);
 }

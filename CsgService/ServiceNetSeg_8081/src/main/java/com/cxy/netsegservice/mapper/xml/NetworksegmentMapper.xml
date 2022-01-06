@@ -39,4 +39,11 @@
         WHERE Alert_flow > 0 ORDER BY TIMESTAMP LIMIT 10
     </select>
 
+    <select id="getSegTotalBytesByTime" resultType="com.cxy.netsegservice.entity.NetSegTotalBytes">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , UPBYTES + DOWNBYTES AS TotalBytes
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= #{startTime} ORDER BY TIMESTAMP
+    </select>
+
+
 </mapper>

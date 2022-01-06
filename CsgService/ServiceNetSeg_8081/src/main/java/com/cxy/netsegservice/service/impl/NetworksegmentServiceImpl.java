@@ -2,6 +2,7 @@ package com.cxy.netsegservice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cxy.baseService.handler.CsgException;
+import com.cxy.netsegservice.Utils.TimeToStamp;
 import com.cxy.netsegservice.entity.Location;
 import com.cxy.netsegservice.entity.NetSegTotalBytes;
 import com.cxy.netsegservice.entity.Networksegment;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +158,19 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 //            timestampList.add(networksegment.getTimestamp());
 //            totalBytesList.add(networksegment.getTotalbytes());
 //        }
+        return new NetSegTotalBytesVO(timestampList, totalBytesList);
+    }
+
+    @Override
+    public NetSegTotalBytesVO getSegTotalBytesByTime(String segment, long startTime) {
+        List<NetSegTotalBytes> networksegments = netSegMappper.getSegTotalBytesByTime(segment,startTime);
+        List<String> timestampList = new ArrayList<>();
+        List<Integer> totalBytesList = new ArrayList<>();
+
+        for (NetSegTotalBytes ns : networksegments) {
+            timestampList.add(ns.getTimestamp());
+            totalBytesList.add(ns.getTotalbytes());
+        }
         return new NetSegTotalBytesVO(timestampList, totalBytesList);
     }
 

@@ -1,5 +1,6 @@
 package com.cxy.netsegservice.controller;
 import com.cxy.commonutils.R;
+import com.cxy.netsegservice.Utils.TimeToStamp;
 import com.cxy.netsegservice.entity.vo.*;
 import com.cxy.netsegservice.service.NetworksegmentService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -116,6 +118,21 @@ public class NetworksegmentController {
     @GetMapping("/getSegTotalBytes/{segment}")
     public R getSegTotalBytes(@PathVariable String segment) {
         NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytes(segment);
+        return R.ok().data("netSegTotalBytesVO", netSegTotalBytesVO);
+    }
+
+    /**
+     *
+     * @param segment 网段名
+     * @param time 开始时间
+     * @return 返回 时刻 和 该时刻字节总数
+     * @throws ParseException
+     */
+    @ApiOperation(value = "根据网段名segment,开始时间startTime查询总流量随时间变化关系")
+    @GetMapping("/getSegTotalBytes/{segment}/{time}")
+    public R getSegTotalBytesByTime(@PathVariable String segment, String time) throws ParseException {
+        long startTime = TimeToStamp.dateToStamp(time);
+        NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytesByTime(segment,startTime);
         return R.ok().data("netSegTotalBytesVO", netSegTotalBytesVO);
     }
 
