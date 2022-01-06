@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.offstatusservice.mapper.OffTerminalStatusMapper">
+
+    <select id="getOffterminalCount" resultType="com.cxy.offstatusservice.entity.OffTerminalCount">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp ,COUNT(TIMESTAMP) AS offTerminalCount
+        FROM OffTerminals
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        GROUP BY TIMESTAMP
+    </select>
+
+    <select id="getOffterminalManufactor" resultType="com.cxy.offstatusservice.entity.OffTerminalManufactor">
+        SELECT ZDCJ as manufactor, COUNT(ZDCJ) as offTerminalCount
+        FROM "OffTerminals"
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        GROUP BY ZDCJ
+    </select>
+
+    <select id="getOffterminalSegment" resultType="com.cxy.offstatusservice.entity.OffTerminalSegment">
+        SELECT ZDLB as netSegment, COUNT(ZDLB) as offTerminalCount
+        FROM "OffTerminals"
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        GROUP BY ZDLB
+    </select>
+
+    <select id="getOffterminalMap" resultType="com.cxy.offstatusservice.entity.OffTerminalMap">
+        SELECT ZDDZ as location, COUNT(ZDDZ) as offTerminalCount
+        FROM "OffTerminals"
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        GROUP BY ZDDZ
+    </select>
+
+
+</mapper>
