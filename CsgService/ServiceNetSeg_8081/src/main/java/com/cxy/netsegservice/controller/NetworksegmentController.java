@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +24,6 @@ import java.util.List;
  */
 @Api(tags = "网段终端状态")
 @RestController
-@RequestMapping("/terminalStatus")
 public class NetworksegmentController {
     @Autowired
     private NetworksegmentService networksegmentService;
@@ -36,7 +34,6 @@ public class NetworksegmentController {
      * </p>
      * @return 返回的是包含网段名list
      */
-    @ApiOperation(value = "网段终端的整体情况")
     @GetMapping("/getNetSegs")
     public R getNetSegs() {
         NetSegVO netSegList = networksegmentService.selectNetSeg();
@@ -55,6 +52,7 @@ public class NetworksegmentController {
      * @param segment 传入的网段
      * @return 返回的是最新一分钟的数据
      */
+    @ApiOperation(value = "根据网段名segment终端的整体情况")
     @GetMapping("/getNetworkSegmentTerminalTotal/{segment}")
     public R getNetworkSegmentTerminalTotal(@PathVariable String segment) {
         System.out.println(segment);
@@ -104,6 +102,7 @@ public class NetworksegmentController {
      * @param segment – 传入的网段
      * @return 返回的是对应的地理位置和数量
      */
+    @ApiOperation(value = "根据网段名segment查询终端IP地区分布情况")
     @GetMapping("/getlocation/{segment}")
     public R getlocation(@PathVariable String segment) {
         MapVO mapList = networksegmentService.getlocation(segment);
@@ -115,6 +114,7 @@ public class NetworksegmentController {
      * @param segment – 传入的网段
      * @return  返回时刻 和 该时刻的总字节数
      */
+    @ApiOperation(value = "根据网段名segment查询网段下的流数情况")
     @GetMapping("/getSegTotalBytes/{segment}")
     public R getSegTotalBytes(@PathVariable String segment) {
         NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytes(segment);
