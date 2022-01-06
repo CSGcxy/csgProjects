@@ -162,7 +162,13 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     }
 
     @Override
-    public NetSegTotalBytesVO getSegTotalBytesByTime(String segment, long startTime) {
+    public NetSegTotalBytesVO getSegTotalBytesByTime(String segment, String time) {
+        long startTime = 0;
+        try {
+            startTime = TimeToStamp.dateToStamp(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         List<NetSegTotalBytes> networksegments = netSegMappper.getSegTotalBytesByTime(segment,startTime);
         List<String> timestampList = new ArrayList<>();
         List<Integer> totalBytesList = new ArrayList<>();
@@ -172,6 +178,11 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
             totalBytesList.add(ns.getTotalbytes());
         }
         return new NetSegTotalBytesVO(timestampList, totalBytesList);
+    }
+
+    @Override
+    public List<String> getIpList(String segment) {
+        return netSegMappper.selectIpList(segment);
     }
 
 

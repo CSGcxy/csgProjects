@@ -129,12 +129,22 @@ public class NetworksegmentController {
      * @throws ParseException
      */
     @ApiOperation(value = "根据网段名segment,开始时间startTime查询总流量随时间变化关系")
-    @GetMapping("/getSegTotalBytes/{segment}/{time}")
-    public R getSegTotalBytesByTime(@PathVariable String segment, String time) throws ParseException {
-        long startTime = TimeToStamp.dateToStamp(time);
-        NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytesByTime(segment,startTime);
+    @GetMapping("/getSegTotalBytes/{segment}/{startTime}")
+    public R getSegTotalBytesByTime(@PathVariable String segment, @PathVariable String time) {
+        NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytesByTime(segment,time);
         return R.ok().data("netSegTotalBytesVO", netSegTotalBytesVO);
     }
 
+    /**
+     * 查询出网段segment下的IP情况
+     *
+     * @return
+     */
+    @ApiOperation(value = "根据网段名segment查询出网段下的IP情况")
+    @GetMapping("/getIpList/{segment}")
+    public R getIpList(@PathVariable String segment) {
+        List<String> ipList = networksegmentService.getIpList(segment);
+        return R.ok().data("ipList", ipList);
+    }
 }
 

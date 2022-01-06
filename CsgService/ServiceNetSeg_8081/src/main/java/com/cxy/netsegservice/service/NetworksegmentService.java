@@ -31,5 +31,8 @@ public interface NetworksegmentService extends IService<Networksegment> {
 
     NetSegTotalBytesVO getSegTotalBytes(String segment);
 
-    NetSegTotalBytesVO getSegTotalBytesByTime(String segment, long time);
+    NetSegTotalBytesVO getSegTotalBytesByTime(String segment, String time);
+
+    List<String> getIpList(String segment);
+
 }

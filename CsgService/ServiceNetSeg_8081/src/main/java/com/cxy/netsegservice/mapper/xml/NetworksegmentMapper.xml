@@ -45,5 +45,11 @@
         WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= #{startTime} ORDER BY TIMESTAMP
     </select>
 
+    <select id="selectIpList" resultType="java.lang.String">
+        SELECT IP FROM ${segment}
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-60000
+        GROUP BY IP
+    </select>
+
 
 </mapper>
