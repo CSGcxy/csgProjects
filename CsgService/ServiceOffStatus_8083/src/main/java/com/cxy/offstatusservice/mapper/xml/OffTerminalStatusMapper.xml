@@ -30,5 +30,20 @@
         GROUP BY ZDDZ
     </select>
 
+    <select id="getOffterminalCategory" resultType="com.cxy.offstatusservice.entity.OffTerminalCategory">
+        SELECT ZDLX as category, COUNT(ZDLX) as offTerminalCount
+        FROM "OffTerminals"
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        GROUP BY ZDLX
+    </select>
+
+    <select id="getOffTerminalSegTimeSequence" resultType="com.cxy.offstatusservice.entity.OffTerminalCount">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp,COUNT(ZDLB) as offTerminalCount
+        FROM "OffTerminals"
+        WHERE ZDLB = #{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        GROUP BY TIMESTAMP
+        ORDER BY TIMESTAMP
+    </select>
+
 
 </mapper>

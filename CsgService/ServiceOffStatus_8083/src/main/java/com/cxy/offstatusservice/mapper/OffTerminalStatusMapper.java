@@ -27,4 +27,8 @@ public interface OffTerminalStatusMapper extends BaseMapper<OffTerminalStatus> {
     List<OffTerminalSegment> getOffterminalSegment();
 
     List<OffTerminalMap> getOffterminalMap();
+
+    List<OffTerminalCategory> getOffterminalCategory();
+
+    List<OffTerminalCount> getOffTerminalSegTimeSequence(String segment);
 }

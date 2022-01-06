@@ -25,4 +25,8 @@ public interface OffStatusService extends IService<OffTerminalStatus> {
     OffTerminalSegmentVO getOffTerminalSegment();
 
     OffTerminalMapVO getOffTerminalMap();
+
+    OffTerminalCategoryVO getOffTerminalCategory();
+
+    OffTerminalCountVO getOffTerminalSegTimeSequence(String segment);
 }

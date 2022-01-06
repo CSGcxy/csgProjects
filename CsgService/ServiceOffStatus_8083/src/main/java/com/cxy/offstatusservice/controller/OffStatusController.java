@@ -82,6 +82,31 @@ public class OffStatusController {
         return R.ok().data("offTerminalMapList",offTerminalMapList);
     }
 
+    /**
+     * <p>
+     * 查询offterminal表中的 不同类别  的  离线终端数
+     * </p>
+     * @return 返回的是包含  不同类别  的  离线终端数
+     */
+//    @ApiOperation(value = "不同类别的离线终端数")
+//    @GetMapping("/getOffTerminalCategory")
+//    public R getOffTerminalCategory() {
+//        OffTerminalCategoryVO offTerminalCategoryList = offStatusService.getOffTerminalCategory();
+//        return R.ok().data("offTerminalCategoryList",offTerminalCategoryList);
+//    }
+
+    /**
+     * <p>
+     * 查询offterminal表中的 不同时刻下  不同网段(输入的参数)  的  离线终端数
+     * </p>
+     * @return 返回的是包含  不同时刻下  不同网段(输入的参数)  的  离线终端数
+     */
+    @ApiOperation(value = "不同时刻不同网段的离线终端数")
+    @GetMapping("/getOffTerminalSegTimeSequence/{segment}")
+    public R getOffTerminalSegTimeSequence(@PathVariable String segment) {
+        OffTerminalCountVO offTerminalSegTimeSequenceList = offStatusService.getOffTerminalSegTimeSequence(segment);
+        return R.ok().data("offTerminalSegTimeSequenceList",offTerminalSegTimeSequenceList);
+    }
 
 }
 

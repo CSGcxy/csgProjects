@@ -85,4 +85,30 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         return new OffTerminalMapVO(mapList, offTerminalCountList);
     }
 
+    @Override
+    public OffTerminalCategoryVO getOffTerminalCategory() {
+        List<OffTerminalCategory> offTerminalCategories = offTerminalStatusMapper.getOffterminalCategory();
+        List<String> categoryList = new ArrayList<>();
+        List<Integer> offTerminalCountList = new ArrayList<>();
+        System.out.println(offTerminalCategories);
+        for (OffTerminalCategory otc : offTerminalCategories) {
+            categoryList.add(otc.getCategory());
+            offTerminalCountList .add(otc.getOffTerminalCount());
+        }
+        return new OffTerminalCategoryVO(categoryList, offTerminalCountList);
+    }
+
+    @Override
+    public OffTerminalCountVO getOffTerminalSegTimeSequence(String segment) {
+        List<OffTerminalCount> offTerminalCounts = offTerminalStatusMapper.getOffTerminalSegTimeSequence(segment);
+        List<String> timestampList = new ArrayList<>();
+        List<Integer> offTerminalCountList = new ArrayList<>();
+        System.out.println(offTerminalCounts);
+        for (OffTerminalCount otc : offTerminalCounts) {
+            timestampList.add(otc.getTimestamp());
+            offTerminalCountList .add(otc.getOffTerminalCount());
+        }
+        return new OffTerminalCountVO(timestampList, offTerminalCountList);
+    }
+
 }
