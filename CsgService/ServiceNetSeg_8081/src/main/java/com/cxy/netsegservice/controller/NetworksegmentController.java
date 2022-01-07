@@ -55,13 +55,12 @@ public class NetworksegmentController {
     @ApiOperation(value = "根据网段名segment终端的整体情况")
     @GetMapping("/getNetworkSegmentTerminalTotal/{segment}")
     public R getNetworkSegmentTerminalTotal(@PathVariable String segment) {
-        System.out.println(segment);
         List<NetSegTotalVO> NetSegTotal = networksegmentService.selectNetworkSegmentTerminalTotal(segment);
         return R.ok().data("NetSegTotal", NetSegTotal);
     }
 
     /**
-     * <p>查询出告警流数出现的时间、IP及对应的流数</p>
+     * <p>查询出告警流数出现的时间、网段及对应的流数</p>
      * @return 只返回最近的前10条
      */
     @ApiOperation(value = "查询出告警流数出现的时间、IP及对应的流数")
@@ -79,7 +78,6 @@ public class NetworksegmentController {
     @ApiOperation(value = "根据网段名segment查询终端通信情况")
     @GetMapping("/getSegCommStatus/{segment}")
     public R getSegCommStatus(@PathVariable String segment) {
-        System.out.println(segment);
         List<SegCommStatusVO> segCommStatusVOList = networksegmentService.getSegCommStatus(segment);
         return R.ok().data("segCommStatusList", segCommStatusVOList);
     }

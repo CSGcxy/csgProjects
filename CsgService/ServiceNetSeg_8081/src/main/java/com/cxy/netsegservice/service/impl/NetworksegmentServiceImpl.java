@@ -54,39 +54,12 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
         return new NetSegVO(segs10x, segsElse);
     }
 
-    //查询出告警流数出现的时间、IP及对应的流数
+    //查询出告警流数出现的时间、网段及对应的流数
     @Override
     public List<AlertFlowVO> getAlertFlow() {
-        // 定义时间格式
-        String format = "yyyy/MM/dd HH:mm:ss";
-        // mybatis plus 条件构造器queryWrapper
-//        QueryWrapper<Networksegment> netSegWrapper = new QueryWrapper<>();
-//        netSegWrapper.ge("Alert_flow", 0);  // 告警流数Alert_flow > 0
-//        netSegWrapper.orderByDesc("TIMESTAMP"); // 以时间戳TIMESTAMP排序
-//        netSegWrapper.last("limit 10");          // 限制记录条数在10条以内
-//        List<Networksegment> networksegments = baseMapper.selectList(netSegWrapper); // 获取满足以上条件的10个网段 即网段内有告警流数 以时间顺序排序
-
-        List<Networksegment> networksegments = netSegMappper.getAlertFlow();
-        System.out.println(networksegments);
-        // 没有任何网段存在告警流,则报错"无告警流"
-        if (networksegments == null) {
-            throw new CsgException(20001, "无告警流");
-        }
-        // 并非将告警流所在网段的所有信息都返回,而是构造一个新的返回体AlertFlowVO 选择性截取网段中的字段返回
-        List<AlertFlowVO> alertFlowVOList = new ArrayList<>();
-        // 规范时间格式
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        // 对获得的告警流所在的10个网段遍历 将 网段 网段时间戳 网段的告警流数 三个字段逐一取出来放置到响应体List<AlertFlowVO>中
-        for (Networksegment netSeg : networksegments) {
-            AlertFlowVO alertFlowVO = new AlertFlowVO();
-            //因为数据库存储的时间戳不是以Date类型存储的，而是Integer类型，所以这里需要将其格式化
-            alertFlowVO.setTimestamp(sdf.format(netSeg.getTimestamp())); // 网段时间戳
-            alertFlowVO.setNetworkseg(netSeg.getNetworkseg());           // 网段
-            alertFlowVO.setAlertFlow(netSeg.getAlertFlow());             // 网段的告警流数
-            alertFlowVOList.add(alertFlowVO);
-        }
-
-        return alertFlowVOList;
+        System.out.println(netSegMappper.getAlertFlow());
+        List<AlertFlowVO> alertFlowList = netSegMappper.getAlertFlow();
+        return alertFlowList;
     }
 
     //根据传入的网段名，在networkSegment表中去查询总体统计表

@@ -33,10 +33,10 @@
         from networksegment
         WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM networksegment)-3600000 ORDER BY TIMESTAMP
     </select>
-    <select id="getAlertFlow" resultType="com.cxy.netsegservice.entity.Networksegment">
-        SELECT NETWORKSEG,UPBYTES,DOWNBYTES,UPRATE,DOWNRATE,Alert_flow as alertFlow,ONDEVICECOUNT,OFFDEVICECOUNT,Active_Flow_Count as activeFlowCount
-        from networksegment
-        WHERE Alert_flow > 0 ORDER BY TIMESTAMP LIMIT 10
+    <select id="getAlertFlow" resultType="com.cxy.netsegservice.entity.vo.AlertFlowVO">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , NETWORKSEG , Alert_flow AS alertflow
+        FROM "networksegment"
+        WHERE alertflow > 0 ORDER BY timestamp DESC LIMIT 10
     </select>
 
     <select id="getSegTotalBytesByTime" resultType="com.cxy.netsegservice.entity.NetSegTotalBytes">

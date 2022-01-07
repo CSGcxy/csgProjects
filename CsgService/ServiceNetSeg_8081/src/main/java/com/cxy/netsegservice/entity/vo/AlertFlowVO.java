@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AlertFlowVO {
     private String timestamp;
-    private String networkseg;
+    private String NETWORKSEG;
     private Integer alertFlow;
 }

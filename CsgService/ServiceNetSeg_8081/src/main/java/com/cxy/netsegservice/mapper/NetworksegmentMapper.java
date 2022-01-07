@@ -5,6 +5,7 @@ import com.cxy.netsegservice.entity.NetSegTotalBytes;
 import com.cxy.netsegservice.entity.Networksegment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cxy.netsegservice.entity.TerminalTrend;
+import com.cxy.netsegservice.entity.vo.AlertFlowVO;
 import com.cxy.netsegservice.entity.vo.NetSegTotalVO;
 import com.cxy.netsegservice.entity.vo.SegCommStatusVO;
 import org.apache.ibatis.annotations.Param;
@@ -37,7 +38,7 @@ public interface NetworksegmentMapper extends BaseMapper<Networksegment> {
 
     List<NetSegTotalBytes> getSegTotalBytesByTime(@Param("segment") String segment, long startTime);
 
-    List<Networksegment> getAlertFlow();
+    List<AlertFlowVO> getAlertFlow();
 
     List<String> selectIpList(@Param("segment") String segment);
 }
