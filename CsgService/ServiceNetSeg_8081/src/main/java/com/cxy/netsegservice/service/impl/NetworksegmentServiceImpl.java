@@ -67,6 +67,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 //        List<Networksegment> networksegments = baseMapper.selectList(netSegWrapper); // 获取满足以上条件的10个网段 即网段内有告警流数 以时间顺序排序
 
         List<Networksegment> networksegments = netSegMappper.getAlertFlow();
+        System.out.println(networksegments);
         // 没有任何网段存在告警流,则报错"无告警流"
         if (networksegments == null) {
             throw new CsgException(20001, "无告警流");

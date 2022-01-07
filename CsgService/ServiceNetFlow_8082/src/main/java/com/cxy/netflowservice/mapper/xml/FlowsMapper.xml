@@ -8,7 +8,7 @@
     </select>
 
     <select id="getFlowSankey" resultType="com.cxy.netflowservice.entity.FlowSankey">
-        SELECT SRC_IP as srcIp, DST_IP as dstIp, BYTE_COUNT as byteCount
+        SELECT SRC_IP as source, DST_IP as target, BYTE_COUNT as value
         FROM ${segment} ORDER BY BYTE_COUNT DESC LIMIT 10
     </select>
 

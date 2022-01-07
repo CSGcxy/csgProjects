@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -12,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class FlowSankeyVO {
     private List<FlowSankey> flowSankeys;
-    private List<String> ip;
+    private HashSet<String> ip;
 }

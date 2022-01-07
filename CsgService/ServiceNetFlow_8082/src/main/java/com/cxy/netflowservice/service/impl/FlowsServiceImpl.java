@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -48,11 +49,10 @@ public class FlowsServiceImpl extends ServiceImpl<FlowsMapper, Flows> implements
     @Override
     public FlowSankeyVO getFlowSankey(String segment) {
         List<FlowSankey> flowSankeyList = flowsMapper.getFlowSankey(segment);
-        System.out.println(flowSankeyList);
-        List<String> ipList = new ArrayList<>();
-        for(FlowSankey fs : flowSankeyList) {
-            ipList.add(fs.getSrcIp());
-            ipList.add(fs.getDstIp());
+        HashSet<String> ipList = new HashSet<>();
+        for (FlowSankey fs : flowSankeyList) {
+            ipList.add(fs.getSource());
+            ipList.add(fs.getTarget());
         }
         return new FlowSankeyVO(flowSankeyList, ipList);
     }
