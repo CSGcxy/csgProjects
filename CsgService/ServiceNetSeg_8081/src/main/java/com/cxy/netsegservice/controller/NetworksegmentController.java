@@ -128,7 +128,9 @@ public class NetworksegmentController {
      */
     @ApiOperation(value = "根据网段名segment,开始时间startTime查询总流量随时间变化关系")
     @GetMapping("/getSegTotalBytes/{segment}/{startTime}")
-    public R getSegTotalBytesByTime(@PathVariable String segment, @PathVariable String time) {
+    public R getSegTotalBytesByTime(@PathVariable String segment, @PathVariable("startTime") String time) {
+        System.out.println(segment);
+        System.out.println(time);
         NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytesByTime(segment,time);
         return R.ok().data("netSegTotalBytesVO", netSegTotalBytesVO);
     }
