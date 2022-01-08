@@ -35,7 +35,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         List<OffTerminalCount> offTerminalCounts = offTerminalStatusMapper.getOffterminalCount();
         List<String> timestampList = new ArrayList<>();
         List<Integer> offTerminalCountList = new ArrayList<>();
-        System.out.println(offTerminalCounts);
+//        System.out.println(offTerminalCounts);
         for (OffTerminalCount otc : offTerminalCounts) {
             timestampList.add(otc.getTimestamp());
             offTerminalCountList .add(otc.getOffTerminalCount());
@@ -50,7 +50,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         List<OffTerminalManufactor> offTerminalManufactors = offTerminalStatusMapper.getOffterminalManufactor();
         List<String> manufactorList = new ArrayList<>();
         List<Integer> offTerminalCountList = new ArrayList<>();
-        System.out.println(offTerminalManufactors);
+//        System.out.println(offTerminalManufactors);
         for (OffTerminalManufactor otm : offTerminalManufactors) {
             manufactorList.add(otm.getManufactor());
             offTerminalCountList .add(otm.getOffTerminalCount());
@@ -64,7 +64,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         List<OffTerminalSegment> offTerminalSegments = offTerminalStatusMapper.getOffterminalSegment();
         List<String> segmentList = new ArrayList<>();
         List<Integer> offTerminalCountList = new ArrayList<>();
-        System.out.println(offTerminalSegments);
+//        System.out.println(offTerminalSegments);
         for (OffTerminalSegment ots : offTerminalSegments) {
             segmentList.add(ots.getNetSegment());
             offTerminalCountList .add(ots.getOffTerminalCount());
@@ -77,7 +77,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         List<OffTerminalMap> offTerminalMaps = offTerminalStatusMapper.getOffterminalMap();
         List<String> mapList = new ArrayList<>();
         List<Integer> offTerminalCountList = new ArrayList<>();
-        System.out.println(offTerminalMaps);
+//        System.out.println(offTerminalMaps);
         for (OffTerminalMap otm : offTerminalMaps) {
             mapList.add(otm.getLocation());
             offTerminalCountList .add(otm.getOffTerminalCount());
@@ -90,7 +90,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         List<OffTerminalCategory> offTerminalCategories = offTerminalStatusMapper.getOffterminalCategory();
         List<String> categoryList = new ArrayList<>();
         List<Integer> offTerminalCountList = new ArrayList<>();
-        System.out.println(offTerminalCategories);
+//        System.out.println(offTerminalCategories);
         for (OffTerminalCategory otc : offTerminalCategories) {
             categoryList.add(otc.getCategory());
             offTerminalCountList .add(otc.getOffTerminalCount());
@@ -103,7 +103,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
         List<OffTerminalCount> offTerminalCounts = offTerminalStatusMapper.getOffTerminalSegTimeSequence(segment);
         List<String> timestampList = new ArrayList<>();
         List<Integer> offTerminalCountList = new ArrayList<>();
-        System.out.println(offTerminalCounts);
+//        System.out.println(offTerminalCounts);
         for (OffTerminalCount otc : offTerminalCounts) {
             timestampList.add(otc.getTimestamp());
             offTerminalCountList .add(otc.getOffTerminalCount());

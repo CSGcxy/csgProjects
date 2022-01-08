@@ -36,7 +36,7 @@ public interface NetworksegmentMapper extends BaseMapper<Networksegment> {
 
     List<NetSegTotalBytes> getSegTotalBytes(@Param("segment") String segment);
 
-    List<NetSegTotalBytes> getSegTotalBytesByTime(@Param("segment") String segment, long startTime);
+    List<NetSegTotalBytes> getSegTotalBytesByTime(String segment, long startTime, long endTime);
 
     List<AlertFlowVO> getAlertFlow();
 

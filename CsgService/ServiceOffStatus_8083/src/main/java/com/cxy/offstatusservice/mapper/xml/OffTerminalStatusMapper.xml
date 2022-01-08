@@ -5,42 +5,42 @@
     <select id="getOffterminalCount" resultType="com.cxy.offstatusservice.entity.OffTerminalCount">
         SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp ,COUNT(TIMESTAMP) AS offTerminalCount
         FROM OffTerminals
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        WHERE TIMESTAMP >= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-60000
         GROUP BY TIMESTAMP
     </select>
 
     <select id="getOffterminalManufactor" resultType="com.cxy.offstatusservice.entity.OffTerminalManufactor">
         SELECT ZDCJ as manufactor, COUNT(ZDCJ) as offTerminalCount
         FROM "OffTerminals"
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM OffTerminals)
         GROUP BY ZDCJ
     </select>
 
     <select id="getOffterminalSegment" resultType="com.cxy.offstatusservice.entity.OffTerminalSegment">
         SELECT ZDLB as netSegment, COUNT(ZDLB) as offTerminalCount
         FROM "OffTerminals"
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM OffTerminals)
         GROUP BY ZDLB
     </select>
 
     <select id="getOffterminalMap" resultType="com.cxy.offstatusservice.entity.OffTerminalMap">
         SELECT ZDDZ as location, COUNT(ZDDZ) as offTerminalCount
         FROM "OffTerminals"
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM OffTerminals)
         GROUP BY ZDDZ
     </select>
 
     <select id="getOffterminalCategory" resultType="com.cxy.offstatusservice.entity.OffTerminalCategory">
         SELECT ZDLX as category, COUNT(ZDLX) as offTerminalCount
         FROM "OffTerminals"
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM OffTerminals)
         GROUP BY ZDLX
     </select>
 
     <select id="getOffTerminalSegTimeSequence" resultType="com.cxy.offstatusservice.entity.OffTerminalCount">
         SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp,COUNT(ZDLB) as offTerminalCount
         FROM "OffTerminals"
-        WHERE ZDLB = #{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-3600000
+        WHERE ZDLB = #{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals)-60000
         GROUP BY TIMESTAMP
         ORDER BY TIMESTAMP
     </select>

@@ -122,16 +122,17 @@ public class NetworksegmentController {
     /**
      *
      * @param segment 网段名
-     * @param time 开始时间
+     * @param startTime 开始时间
+     * @param endTime 结束时间
      * @return 返回 时刻 和 该时刻字节总数
-     * @throws ParseException
      */
     @ApiOperation(value = "根据网段名segment,开始时间startTime查询总流量随时间变化关系")
-    @GetMapping("/getSegTotalBytes/{segment}/{startTime}")
-    public R getSegTotalBytesByTime(@PathVariable String segment, @PathVariable("startTime") String time) {
-        System.out.println(segment);
-        System.out.println(time);
-        NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytesByTime(segment,time);
+    @GetMapping("/getSegTotalBytesByTime/{segment}/{startTime}/{endTime}")
+    public R getSegTotalBytesByTime(@PathVariable("segment") String segment,
+                                    @PathVariable("startTime") long startTime,
+                                    @PathVariable("endTime") long endTime) {
+//        return R.ok().data("startTime", startTime).data("endTime", endTime);
+        NetSegTotalBytesVO netSegTotalBytesVO = networksegmentService.getSegTotalBytesByTime(segment,startTime,endTime);
         return R.ok().data("netSegTotalBytesVO", netSegTotalBytesVO);
     }
 
