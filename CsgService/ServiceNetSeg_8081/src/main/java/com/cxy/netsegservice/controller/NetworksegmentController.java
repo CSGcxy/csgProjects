@@ -3,6 +3,8 @@ import com.cxy.commonutils.R;
 import com.cxy.netsegservice.Utils.TimeToStamp;
 import com.cxy.netsegservice.entity.vo.*;
 import com.cxy.netsegservice.service.NetworksegmentService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +68,8 @@ public class NetworksegmentController {
     @ApiOperation(value = "查询出告警流数出现的时间、IP及对应的流数")
     @GetMapping("/getAlertFlow")
     public R getAlertFlow() {
-        List<AlertFlowVO> AlertFlowList = networksegmentService.getAlertFlow();
-        return R.ok().data("AlertFlowList", AlertFlowList);
+
+        return R.ok().data("AlertFlowList", networksegmentService.getAlertFlow());
     }
 
     /**

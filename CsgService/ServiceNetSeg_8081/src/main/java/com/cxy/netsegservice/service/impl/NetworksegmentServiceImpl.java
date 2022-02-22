@@ -11,6 +11,8 @@ import com.cxy.netsegservice.entity.vo.*;
 import com.cxy.netsegservice.mapper.NetworksegmentMapper;
 import com.cxy.netsegservice.service.NetworksegmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,10 +58,11 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
     //查询出告警流数出现的时间、网段及对应的流数
     @Override
-    public List<AlertFlowVO> getAlertFlow() {
-        System.out.println(netSegMappper.getAlertFlow());
+    public PageInfo<AlertFlowVO> getAlertFlow() {
+        PageHelper.startPage(2, 2);
         List<AlertFlowVO> alertFlowList = netSegMappper.getAlertFlow();
-        return alertFlowList;
+        PageInfo<AlertFlowVO> res = new PageInfo<>(alertFlowList);
+        return res;
     }
 
     //根据传入的网段名，在networkSegment表中去查询总体统计表

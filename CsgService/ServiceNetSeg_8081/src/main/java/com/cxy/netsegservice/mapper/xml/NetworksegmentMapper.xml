@@ -36,7 +36,7 @@
     <select id="getAlertFlow" resultType="com.cxy.netsegservice.entity.vo.AlertFlowVO">
         SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , NETWORKSEG , Alert_flow AS alertflow
         FROM "networksegment"
-        WHERE alertflow > 0 ORDER BY timestamp DESC LIMIT 10
+        WHERE alertflow > 0 ORDER BY timestamp DESC
     </select>
 
     <select id="getSegTotalBytesByTime" resultType="com.cxy.netsegservice.entity.NetSegTotalBytes">

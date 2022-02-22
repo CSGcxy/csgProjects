@@ -3,6 +3,7 @@ package com.cxy.netsegservice.service;
 import com.cxy.netsegservice.entity.Networksegment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cxy.netsegservice.entity.vo.*;
+import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface NetworksegmentService extends IService<Networksegment> {
 
     NetSegVO selectNetSeg();
 
-    List<AlertFlowVO> getAlertFlow();
+    PageInfo<AlertFlowVO> getAlertFlow();
 
     List<NetSegTotalVO> selectNetworkSegmentTerminalTotal(String segment);
 
