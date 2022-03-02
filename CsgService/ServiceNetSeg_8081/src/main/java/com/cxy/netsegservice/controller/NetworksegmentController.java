@@ -80,8 +80,8 @@ public class NetworksegmentController {
     @ApiOperation(value = "根据网段名segment查询终端通信情况")
     @GetMapping("/getSegCommStatus/{segment}")
     public R getSegCommStatus(@PathVariable String segment) {
-        List<SegCommStatusVO> segCommStatusVOList = networksegmentService.getSegCommStatus(segment);
-        return R.ok().data("segCommStatusList", segCommStatusVOList);
+//        List<SegCommStatusVO> segCommStatusVOList = networksegmentService.getSegCommStatus(segment);
+        return R.ok().data("segCommStatusList", networksegmentService.getSegCommStatus(segment));
     }
 
     /**
@@ -105,8 +105,7 @@ public class NetworksegmentController {
     @ApiOperation(value = "根据网段名segment查询终端IP地区分布情况")
     @GetMapping("/getlocation/{segment}")
     public R getlocation(@PathVariable String segment) {
-        MapVO mapList = networksegmentService.getlocation(segment);
-        return R.ok().data("mapList", mapList);
+        return R.ok().data("locationList", networksegmentService.getlocation(segment));
     }
 
     /**

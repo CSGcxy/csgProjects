@@ -73,9 +73,11 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
     //根据网段名segment查询对应网段下终端IP通信情况
     @Override
-    public List<SegCommStatusVO> getSegCommStatus(String segment) {
+    public PageInfo<SegCommStatusVO> getSegCommStatus(String segment) {
 //        return netSegMappper.selectSegCommStatus("networksegment_"+segment.replace(".","_"));
-        return netSegMappper.selectSegCommStatus(segment);
+        PageHelper.startPage(1, 5);
+        List<SegCommStatusVO> statusVOList = netSegMappper.selectSegCommStatus(segment);
+        return new PageInfo<>(statusVOList);
     }
 
     //根据网段名查询在线终端数量、下行速率、上行速率随时间变化情况
@@ -99,24 +101,21 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
     //根据网段名查询过去一小时的终端IP地区分布情况
     @Override
-    public MapVO getlocation(String segment) {
-        ArrayList<String> locs = new ArrayList<>();
-        List<Integer> count = new ArrayList<>();
-//        String[] patterns = new String[]{".*内网.*","密歇根.*"};
-//        String segmentNet = "networksegment_" + segment.replace(".", "_");
+    public List<Location> getlocation(String segment) {
+        List<Location> locationList = netSegMappper.selectLocation(segment);
+//        for (Location loc : netSegMappper.selectLocation(segment)) {
+//            locs.add(loc.getLocation());
+//            count.add(loc.getCount());
+////            if (Pattern.matches(patterns[0], loc.getLocation())) {
+////                locs.add("广东");
+////                count.add(loc.getCount());
+////            } else {
+////                locs.add("其他");
+////                count.add(loc.getCount());
+////            }
+//        }
 
-        for (Location loc : netSegMappper.selectLocation(segment)) {
-            locs.add(loc.getLocation());
-            count.add(loc.getCount());
-//            if (Pattern.matches(patterns[0], loc.getLocation())) {
-//                locs.add("广东");
-//                count.add(loc.getCount());
-//            } else {
-//                locs.add("其他");
-//                count.add(loc.getCount());
-//            }
-        }
-        return new MapVO(locs, count);
+        return locationList;
     }
 
     //根据网段名查询过去一小时的终端IP地区分布情况

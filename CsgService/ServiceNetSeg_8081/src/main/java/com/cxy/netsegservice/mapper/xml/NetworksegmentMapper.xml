@@ -15,7 +15,7 @@
 
     <select id="selectSegCommStatus" resultType="com.cxy.netsegservice.entity.vo.SegCommStatusVO">
         SELECT IP,LOCATION,FLOWS,NAME,TotalRecvBytes,TotalBytes,RATES,LastSeen
-        FROM ${segment} WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment}) ORDER BY RATES LIMIT 5
+        FROM ${segment} WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment}) ORDER BY RATES
     </select>
 
     <select id="getTerminalTrendStatus" resultType="com.cxy.netsegservice.entity.TerminalTrend">
@@ -24,10 +24,11 @@
     </select>
 
     <select id="selectLocation" resultType="com.cxy.netsegservice.entity.Location">
-        SELECT LOCATION,COUNT(LOCATION) as count from ${segment}
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-3600000
+        SELECT LOCATION name,COUNT(LOCATION) value FROM ${segment}
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment})
         GROUP BY LOCATION
     </select>
+
     <select id="getSegTotalBytes" resultType="com.cxy.netsegservice.entity.NetSegTotalBytes">
         SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , UPBYTES + DOWNBYTES AS TotalBytes
         from networksegment

@@ -1,5 +1,6 @@
 package com.cxy.netsegservice.service;
 
+import com.cxy.netsegservice.entity.Location;
 import com.cxy.netsegservice.entity.Networksegment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cxy.netsegservice.entity.vo.*;
@@ -24,11 +25,11 @@ public interface NetworksegmentService extends IService<Networksegment> {
 
     List<NetSegTotalVO> selectNetworkSegmentTerminalTotal(String segment);
 
-    List<SegCommStatusVO> getSegCommStatus(String segment);
+    PageInfo<SegCommStatusVO> getSegCommStatus(String segment);
 
     TerminalTrendVO getTerminalTrendStatus(String segment);
 
-    MapVO getlocation(String segment);
+    List<Location> getlocation(String segment);
 
     NetSegTotalBytesVO getSegTotalBytes(String segment);
 
