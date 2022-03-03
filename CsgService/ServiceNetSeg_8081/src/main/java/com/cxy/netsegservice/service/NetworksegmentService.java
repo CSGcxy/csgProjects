@@ -25,7 +25,7 @@ public interface NetworksegmentService extends IService<Networksegment> {
 
     List<NetSegTotalVO> selectNetworkSegmentTerminalTotal(String segment);
 
-    PageInfo<SegCommStatusVO> getSegCommStatus(String segment);
+    PageInfo<SegCommStatusVO> getSegCommStatus(String segment,Integer current);
 
     TerminalTrendVO getTerminalTrendStatus(String segment);
 

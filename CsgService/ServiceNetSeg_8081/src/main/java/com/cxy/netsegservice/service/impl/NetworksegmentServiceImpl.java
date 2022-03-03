@@ -13,9 +13,12 @@ import com.cxy.netsegservice.service.NetworksegmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -33,6 +36,7 @@ import java.util.regex.Pattern;
  * @since 2021-12-04
  */
 @Service
+@Slf4j
 public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper, Networksegment> implements NetworksegmentService {
 
 
@@ -73,9 +77,11 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
     //根据网段名segment查询对应网段下终端IP通信情况
     @Override
-    public PageInfo<SegCommStatusVO> getSegCommStatus(String segment) {
+    public PageInfo<SegCommStatusVO> getSegCommStatus(String segment, Integer current) {
 //        return netSegMappper.selectSegCommStatus("networksegment_"+segment.replace(".","_"));
-        PageHelper.startPage(1, 5);
+//        log.info("segment:" + segment);
+//        log.info("current page is:" + current);
+        PageHelper.startPage(current, 5);
         List<SegCommStatusVO> statusVOList = netSegMappper.selectSegCommStatus(segment);
         return new PageInfo<>(statusVOList);
     }

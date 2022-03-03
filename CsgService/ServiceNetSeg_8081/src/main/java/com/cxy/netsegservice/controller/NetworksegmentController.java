@@ -78,10 +78,11 @@ public class NetworksegmentController {
      * @return 返回对应网段下的不同终端IP对应的通信情况
      */
     @ApiOperation(value = "根据网段名segment查询终端通信情况")
-    @GetMapping("/getSegCommStatus/{segment}")
-    public R getSegCommStatus(@PathVariable String segment) {
+    @GetMapping("/getSegCommStatus/{segment}/{current}")
+    public R getSegCommStatus(@PathVariable String segment,
+                              @PathVariable Integer current) {
 //        List<SegCommStatusVO> segCommStatusVOList = networksegmentService.getSegCommStatus(segment);
-        return R.ok().data("segCommStatusList", networksegmentService.getSegCommStatus(segment));
+        return R.ok().data("segCommStatusList", networksegmentService.getSegCommStatus(segment,current));
     }
 
     /**
