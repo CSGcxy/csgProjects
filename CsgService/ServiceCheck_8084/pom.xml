@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ServiceOffStatus_8083</artifactId>
+    <artifactId>ServiceCheck_8084</artifactId>
+
 
 </project>
