@@ -96,20 +96,21 @@
         WHERE afn = ${afnSingle}
     </select>
 
-    <select id="getSpecialCountList" resultType="java.lang.Integer">
-        SELECT cnt
-        FROM(SELECT timeStamp,SUBSTR(timeStamp,0,19)||(floor(cast(SUBSTR(timeStamp,19) as int)/${second})*${second}) flag,afn,SUM(nums) as cnt
-             from
-                 (
-                 SELECT DATETIME(ROUND(ts,0),'unixepoch','localtime') timeStamp,afn,COUNT(*) nums
-                 FROM "test_v1"
-                 where afn>=0
-                 GROUP BY timeStamp,afn
-                 )
-             GROUP BY afn,flag
-             ORDER BY timeStamp)
+    <select id="getSpecialCountList" resultType="com.cxy.checkservice.entity.vo.Afn">
+        SELECT afn,cnt,COUNT(*) as countNum
+        FROM(
+                SELECT timeStamp,SUBSTR(timeStamp,0,19)||(floor(cast(SUBSTR(timeStamp,19) as int)/${second})*${second}) flag,afn,SUM(nums) as cnt
+                from
+                    (
+                    SELECT DATETIME(ROUND(ts,0),'unixepoch','localtime') timeStamp,afn,COUNT(*) nums
+                    FROM "test_v1"
+                    where afn>=0
+                    GROUP BY timeStamp,afn
+                    )
+                GROUP BY afn,flag
+                ORDER BY timeStamp)
         WHERE afn = ${afnSingle}
-        AND timeStamp = ${timeSingle}
+        AND timeStamp = '${timeSingle}'
     </select>
 
 
@@ -127,6 +128,24 @@
                 GROUP BY afn,flag
                 ORDER BY timeStamp)
         WHERE afn = ${afnSingle}
+    </select>
+
+
+    <select id="countNonNull" resultType="java.lang.Integer">
+        SELECT COUNT(*) as countNum
+        FROM(
+                SELECT timeStamp,SUBSTR(timeStamp,0,19)||(floor(cast(SUBSTR(timeStamp,19) as int)/${second})*${second}) flag,afn,SUM(nums) as cnt
+                from
+                    (
+                    SELECT DATETIME(ROUND(ts,0),'unixepoch','localtime') timeStamp,afn,COUNT(*) nums
+                    FROM "test_v1"
+                    where afn>=0
+                    GROUP BY timeStamp,afn
+                    )
+                GROUP BY afn,flag
+                ORDER BY timeStamp)
+        WHERE afn = ${afnSingle}
+          AND timeStamp = '${timeSingle}'
     </select>
 
 

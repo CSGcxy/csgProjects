@@ -49,7 +49,10 @@ public interface PacketCheckMapper extends BaseMapper<TestV1> {
     List<Integer> getAnfCountList(Integer afnSingle,Integer second);
 
     // 单独根据时间和afn查afn的数目
-    int getSpecialCountList(String timeSingle, Integer afnSingle,Integer second);
+    Afn getSpecialCountList(String timeSingle, Integer afnSingle,Integer second);
 
     int getAfnTotalCount(Integer afnSingle, Integer second);
+
+    // 判断是否有这条记录
+    int countNonNull(String timeSingle, Integer afnSingle,Integer second);
 }

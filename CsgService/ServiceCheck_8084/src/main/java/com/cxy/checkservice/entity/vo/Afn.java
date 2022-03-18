@@ -11,6 +11,8 @@ public class Afn {
 
     private Integer afn;
 
-    private Integer count;
+    private Integer cnt;
+
+    private Integer countNum;
 
 }

@@ -167,11 +167,20 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
         HashMap<Integer, Integer> afnTotalHashMap = new HashMap<>();
         for(Integer afnSingle : afnList) {
             List<Integer> afnCountList = packetCheckMapper.getAnfCountList(afnSingle,second);
-            if (afnCountList.size() < afnList.size()) {
+            if (afnCountList.size() < timeList.size()) {
                 afnCountList.clear();
                 for (String timeSingle :timeList) {
-                    int cnt = packetCheckMapper.getSpecialCountList(timeSingle,afnSingle,second);
-                    afnCountList.add(cnt);
+                    Afn afnTemp = new Afn();
+                    int flag = packetCheckMapper.countNonNull(timeSingle,afnSingle,second);
+                    if (flag != 0) {
+                        afnTemp = packetCheckMapper.getSpecialCountList(timeSingle,afnSingle,second);
+                    }else {
+                        afnTemp.setAfn(afnSingle);
+                        afnTemp.setCountNum(0);
+                        afnTemp.setCnt(0);
+                    }
+//                    afnTemp = packetCheckMapper.getSpecialCountList(timeSingle,afnSingle,second);
+                    afnCountList.add(afnTemp.getCnt());
                 }
             }
             afnHashMap.put(afnSingle,afnCountList);
