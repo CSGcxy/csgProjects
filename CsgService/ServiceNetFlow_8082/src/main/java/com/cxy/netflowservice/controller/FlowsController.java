@@ -31,7 +31,6 @@ public class FlowsController {
     @ApiOperation(value = "查询活跃流")
     @GetMapping("/getActiveFlows/{segment}")
     public R getActiveFlows(@PathVariable("segment") String segment) {
-        System.out.println(segment);
         List<ActiveFlowsVO> activeFlowsVOList = flowsService.getActiveFlows(segment);
         return R.ok().data("activeFlowsList", activeFlowsVOList);
     }
