@@ -8,6 +8,8 @@ import com.cxy.netflowservice.mapper.FlowsMapper;
 import com.cxy.netflowservice.service.FlowsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cxy.netflowservice.utils.TransferTime;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +34,9 @@ public class FlowsServiceImpl extends ServiceImpl<FlowsMapper, Flows> implements
 
 
     @Override
-    public List<ActiveFlowsVO> getActiveFlows(String segment) {
+    public PageInfo<ActiveFlowsVO> getActiveFlows(String segment,Integer current) {
         DecimalFormat df = new DecimalFormat("#.00");
+        PageHelper.startPage(current,5);
         List<ActiveFlowsVO> activeFlowsVOList = flowsMapper.getActiveFlows(segment);
         for(ActiveFlowsVO activeFlowsVO : activeFlowsVOList) {
             String dur = activeFlowsVO.getDuration();
@@ -42,7 +45,7 @@ public class FlowsServiceImpl extends ServiceImpl<FlowsMapper, Flows> implements
             activeFlowsVO.setByteCount(Double.parseDouble(df.format(activeFlowsVO.getByteCount()/1024)));
             activeFlowsVO.setDuration(TransferTime.converLongTimeToStr(Long.parseLong(activeFlowsVO.getDuration())/1000000));
         }
-        return activeFlowsVOList;
+        return new PageInfo<>(activeFlowsVOList);
     }
 
 

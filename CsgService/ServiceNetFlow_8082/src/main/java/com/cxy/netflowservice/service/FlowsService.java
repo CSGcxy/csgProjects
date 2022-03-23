@@ -4,6 +4,7 @@ import com.cxy.netflowservice.entity.Flows;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cxy.netflowservice.entity.vo.ActiveFlowsVO;
 import com.cxy.netflowservice.entity.vo.FlowSankeyVO;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public interface FlowsService extends IService<Flows> {
 
-    List<ActiveFlowsVO> getActiveFlows(String segment);
+    PageInfo<ActiveFlowsVO> getActiveFlows(String segment, Integer current);
 
     FlowSankeyVO getFlowSankey(String segment);
 }

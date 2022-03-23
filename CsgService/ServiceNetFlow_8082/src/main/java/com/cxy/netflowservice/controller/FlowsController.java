@@ -29,10 +29,10 @@ public class FlowsController {
     private FlowsService flowsService;
 
     @ApiOperation(value = "查询活跃流")
-    @GetMapping("/getActiveFlows/{segment}")
-    public R getActiveFlows(@PathVariable("segment") String segment) {
-        List<ActiveFlowsVO> activeFlowsVOList = flowsService.getActiveFlows(segment);
-        return R.ok().data("activeFlowsList", activeFlowsVOList);
+    @GetMapping("/getActiveFlows/{segment}/{current}")
+    public R getActiveFlows(@PathVariable("segment") String segment,
+                            @PathVariable Integer current) {
+        return R.ok().data("activeFlowsList", flowsService.getActiveFlows(segment,current));
     }
 
     @ApiOperation(value = "查询网段整体桑基图")
