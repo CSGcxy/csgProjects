@@ -16,6 +16,7 @@
         <module>ServiceNetFlow_8082</module>
         <module>ServiceOffStatus_8083</module>
         <module>ServiceCheck_8084</module>
+        <module>ServiceAssess_8005</module>
     </modules>
 
     <dependencies>
