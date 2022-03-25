@@ -4,24 +4,24 @@
 
 
     <select id="getPacketCount" resultType="com.cxy.checkservice.entity.vo.PacketCountVo">
-        SELECT afn,COUNT(*) as count
+        SELECT afn,COUNT(afn) as count
         FROM "test_v1"
-        where ts > (SELECT MAX(ts) FROM "test_v1") - 2
+        where ts > (SELECT MAX(ts) FROM "test_v1") - 5
         GROUP BY afn
     </select>
 
     <select id="getUnqualifiedPacketCount" resultType="java.lang.Integer">
-        SELECT COUNT(*) as unqualifiedCount
+        SELECT COUNT(afn) as unqualifiedCount
         FROM "test_v1"
         where afn = -1
-        AND ts > (SELECT MAX(ts) FROM "test_v1") - 2
+        AND ts > (SELECT MAX(ts) FROM "test_v1") - 5
     </select>
 
     <select id="getQualifiedPacketCount" resultType="java.lang.Integer">
-        SELECT COUNT(*) as qualifiedCount
+        SELECT COUNT(afn) as qualifiedCount
         FROM "test_v1"
         where afn != -1
-        AND ts > (SELECT MAX(ts) FROM "test_v1") - 2
+        AND ts > (SELECT MAX(ts) FROM "test_v1") - 5
     </select>
 
 
@@ -46,6 +46,26 @@
         FROM "test_v1"
         WHERE afn = -1
         AND ts > (SELECT MAX(ts) FROM "test_v1") - 5
+    </select>
+
+
+    <select id="getDifAfnCount" resultType="com.cxy.checkservice.entity.vo.AfnPeriod">
+        SELECT period,afn,count
+        from
+            (
+                SELECT timeStamp,SUBSTR(timeStamp,0,19)||(floor(cast(SUBSTR(timeStamp,-1) as int)/${second})*${second}) period,afn,SUM(nums) count
+                from
+                    (
+                    SELECT DATETIME(ROUND(ts,0),'unixepoch','localtime') timeStamp,afn,COUNT(*) nums
+                    FROM "test_v1"
+                    where afn!=-1
+                    and ts>(SELECT MAX(ts) FROM "test_v1")-40
+                    GROUP BY timeStamp,afn
+                    )
+                GROUP BY afn,period
+                ORDER BY timeStamp
+            ) temp
+        group by afn,period
     </select>
 
     <select id="getAfnList" resultType="java.lang.Integer">

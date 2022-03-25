@@ -2,10 +2,7 @@ package com.cxy.checkservice.mapper;
 
 import com.cxy.checkservice.entity.TestV1;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cxy.checkservice.entity.vo.Afn;
-import com.cxy.checkservice.entity.vo.AfnVo;
-import com.cxy.checkservice.entity.vo.PacketCountVo;
-import com.cxy.checkservice.entity.vo.PacketDetailsVo;
+import com.cxy.checkservice.entity.vo.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -55,4 +52,6 @@ public interface PacketCheckMapper extends BaseMapper<TestV1> {
 
     // 判断是否有这条记录
     int countNonNull(String timeSingle, Integer afnSingle,Integer second);
+
+    List<AfnPeriod> getDifAfnCount(Integer second);
 }

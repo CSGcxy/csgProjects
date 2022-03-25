@@ -2,8 +2,8 @@ package com.cxy.checkservice.entity.vo;
 
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lishuguang
@@ -14,8 +14,8 @@ public class AfnTimeVo {
 
     private List<String> timeList;
 
-    private HashMap<Integer, List<Integer>> afnHashMap;
+    private Map<Integer, List<Integer>> afnHashMap;
 
-    private HashMap<Integer, Integer> afnTotalHashMap;
+    private Map<Integer, Integer> afnTotalHashMap;
 
 }

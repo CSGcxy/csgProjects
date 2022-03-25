@@ -8,13 +8,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * <p>
@@ -25,6 +26,7 @@ import java.util.List;
  * @since 2022-03-16
  */
 @Service
+@Slf4j
 public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV1> implements PacketCheckService {
 
     @Autowired
@@ -53,108 +55,6 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
     @Override
     public AfnTimeVo getDiffrentAfnCount(Integer second) {
 
-        /**
-        for (int i = 4;i > 0;i--) {
-            AfnVo afnVo = new AfnVo();
-            List<Afn> afnLlist = packetCheckMapper.getDiffrentAfnCount(second * i,second * (i-1));
-            String ts = packetCheckMapper.getTime(second * (i-1));
-
-            afnVo.setAfnList(afnLlist);
-            afnVo.setTs(ts);
-            afnVoList.add(afnVo);
-
-            timeList.add(ts);
-        }
-        **/
-
-        /**
-        HashMap<Integer,List<Integer>> afnMap = new HashMap<>();
-        for (AfnVo afnVo : afnVoList) {
-            for (Afn afn : afnVo.getAfnList()) {
-                switch (afn.getAfn()) {
-                    case 0:
-                        if (afnMap.containsKey(0)){
-                            List<Integer> tempList = new ArrayList<>();
-                            for (int i = 0;i < afnMap.get(0).size();i++) {
-                                tempList.add(afnMap.get(0).get(i));
-                            }
-                            tempList.add(afn.getCount());
-                            afnMap.put(0, tempList);
-                        }else{
-                            List<Integer> tempList = new ArrayList<>();
-                            tempList.add(afn.getCount());
-                            afnMap.put(0, tempList);
-                        }
-                        break;
-                    case 2:
-                        if (afnMap.containsKey(2)){
-                            List<Integer> tempList = new ArrayList<>();
-                            for (int i = 0;i < afnMap.get(0).size();i++) {
-                                tempList.add(afnMap.get(0).get(i));
-                            }
-                            tempList.add(afn.getCount());
-                            afnMap.put(2, tempList);
-                        }else{
-                            List<Integer> tempList = new ArrayList<>();
-                            tempList.add(0);
-                            afnMap.put(2, tempList);
-                        }
-                        break;
-                    default:
-                        System.out.println(333);
-                }
-            }
-        }
-
-         **/
-
-        /**
-        HashMap<Integer,List<Integer>> afnMap = new HashMap<>();
-        Integer[] afnExampleList = {0,2,10,18,19};
-        for (AfnVo afnVo : afnVoList) {
-            // 这一层遍历afn样值
-            for (int afnexampleList : afnExampleList) {
-                // 假如遍历到了 afnexampleList = 2
-                for (Afn afn : afnVo.getAfnList()) {  // 逐个afn检查有没有afn=2的记录
-                    if (afn.getAfn() == afnexampleList) {  // 如果当前afn对象的afn为2
-                        if (afnMap.containsKey(afn.getAfn())){ // 如果哈希表中已经有了afn=2的记录
-                            List<Integer> tempList = new ArrayList<>();
-                            // 取出原记录
-                            for (int i = 0;i < afnMap.get(afn.getAfn()).size();i++) {
-                                tempList.add(afnMap.get(afn.getAfn()).get(i));
-                            }
-                            // 加上新记录
-                            tempList.add(afn.getCount());
-                            afnMap.put(afn.getAfn(), tempList);
-                        }else{  // 如果哈希表中没有afn=2的记录
-                            List<Integer> tempList = new ArrayList<>();
-                            tempList.add(afn.getCount());
-                            afnMap.put(afn.getAfn(), tempList);
-                        }
-                    }else {  // 如果当前afnList中没有afn对象的afn=2 只是代表本afnList 也就是本时间段没有 不代表之前没有 所以还要查哈希表中是否之前有
-                        if (afnMap.containsKey(afnexampleList)){ // 如果哈希表中已经有了afn=2的记录
-                            List<Integer> tempList = new ArrayList<>();
-                            // 取出原记录
-                            for (int i = 0;i < afnMap.get(afnexampleList).size();i++) {
-                                tempList.add(afnMap.get(afnexampleList).get(i));
-                            }
-                            // 加上新记录0
-                            tempList.add(0);
-                            afnMap.put(afnexampleList, tempList);
-                        }else{  // 如果哈希表中没有afn=2的记录
-                            List<Integer> tempList = new ArrayList<>();
-                            tempList.add(0);
-                            afnMap.put(afnexampleList, tempList);
-                        }
-                    }
-                }
-            }
-        }
-
-        AfnTimeVo afnTimeVo = new AfnTimeVo();
-        afnTimeVo.setTimeList(timeList);
-        afnTimeVo.setAfnHashMap(afnMap);
-        **/
         // 1.查出数据库中所有afn
         List<Integer> afnList = packetCheckMapper.getAfnList(second);
 
@@ -162,9 +62,9 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
         List<String> timeList = packetCheckMapper.getTimeList(second);
 
         // 3.查出每个afn在上述时间的值列表，放入哈希表中key为afn的value中
-        HashMap<Integer, List<Integer>> afnHashMap = new HashMap<>();
+        Map<Integer, List<Integer>> afnHashMap = new HashMap<>();
         // 4.查询最近时间段内不同afn数目总体统计
-        HashMap<Integer, Integer> afnTotalHashMap = new HashMap<>();
+        Map<Integer, Integer> afnTotalHashMap = new HashMap<>();
         for(Integer afnSingle : afnList) {
             List<Integer> afnCountList = packetCheckMapper.getAnfCountList(afnSingle,second);
             if (afnCountList.size() < timeList.size()) {
@@ -189,8 +89,6 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
             afnTotalHashMap.put(afnSingle,afnTotalCount);
 
         }
-
-
         // 5.将哈希表放入响应体
         AfnTimeVo afnTimeVo = new AfnTimeVo();
         afnTimeVo.setTimeList(timeList);
@@ -198,6 +96,51 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
         afnTimeVo.setAfnTotalHashMap(afnTotalHashMap);
 
         // 返回响应体
+        return afnTimeVo;
+    }
+
+    @Override
+    public AfnTimeVo getDifAfnCount(Integer second) {
+        List<AfnPeriod> afnCount = packetCheckMapper.getDifAfnCount(second);
+        //使用set对日期进行去重，然后再转换为list
+        Set<String> set = new HashSet<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(AfnPeriod afn:afnCount){
+            set.add(afn.getPeriod());
+            if (map.containsKey(afn.getAfn())) {
+                map.get(afn.getAfn()).add(afn.getCount());
+            } else {
+                map.put(afn.getAfn(), new LinkedList<Integer>());
+                map.get(afn.getAfn()).add(afn.getCount());
+            }
+        }
+        List<String> list = new ArrayList<>(set);
+        //对timelist做一个排序
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int mark = 1;
+                try {
+                    Date date1 = timeFormat.parse(o1);
+                    Date date2 = timeFormat.parse(o2);
+                    if(date1.getTime() < date2.getTime()){
+                        mark = -1;//调整顺序,-1为不需要调整顺序;
+                    }
+                    if(o1.equals(o2)){
+                        mark =  0;
+                    }
+                } catch (ParseException e) {
+                    log.error("日期转换异常", e);
+                    e.printStackTrace();
+                }
+                return mark;
+            }
+
+        });
+        AfnTimeVo afnTimeVo = new AfnTimeVo();
+        afnTimeVo.setTimeList(list);
+        afnTimeVo.setAfnHashMap(map);
         return afnTimeVo;
     }
 

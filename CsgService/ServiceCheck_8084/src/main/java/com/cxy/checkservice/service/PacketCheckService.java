@@ -29,4 +29,6 @@ public interface PacketCheckService extends IService<TestV1> {
 
     // 分页查询5s内不合规packet记录明细
     PageInfo<PacketDetailsVo> getUnqualifiedDetails(Integer page,Integer pageSize);
+
+    AfnTimeVo getDifAfnCount(Integer second);
 }
