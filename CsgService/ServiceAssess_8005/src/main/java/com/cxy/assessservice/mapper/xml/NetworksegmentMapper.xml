@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.assessservice.mapper.NetworksegmentMapper">
+
+    <select id="getSegList" resultType="java.lang.String">
+        SELECT NETWORKSEG FROM "networksegment"
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000
+        GROUP BY NETWORKSEG
+    </select>
+
+    <select id="getuprateRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.UpRateRatio">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts,NETWORKSEG AS netSegment,UPRATE AS uprate,
+          (SELECT ROUND(AVG(UPRATE),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as averageRate,
+          (SELECT MAX(UPRATE) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as maxRate,
+          (SELECT UPRATE/(SELECT ROUND(AVG(UPRATE),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000)) as ratio
+        FROM "networksegment"
+        WHERE NETWORKSEG = ${segment}
+        AND TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-5000
+    </select>
+
+
+    <select id="getdownrateRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.DownRateRatio">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts,NETWORKSEG AS netSegment,DOWNRATE AS downrate,
+            (SELECT ROUND(AVG(DOWNRATE),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as averageRate,
+            (SELECT MAX(DOWNRATE) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as maxRate,
+            (SELECT DOWNRATE/(SELECT ROUND(AVG(DOWNRATE),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000)) as ratio
+        FROM "networksegment"
+        WHERE NETWORKSEG = ${segment}
+        AND TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-5000
+    </select>
+
+
+    <select id="getonlineCountRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.OnlineCountRatio">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts,NETWORKSEG AS netSegment,ONDEVICECOUNT AS onlineCount,
+            (SELECT ROUND(AVG(ONDEVICECOUNT),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as averageCount,
+            (SELECT MAX(ONDEVICECOUNT) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as maxCount,
+            (SELECT ONDEVICECOUNT/(SELECT ROUND(AVG(ONDEVICECOUNT),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000)) as ratio
+        FROM "networksegment"
+        WHERE NETWORKSEG = ${segment}
+        AND TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-5000
+    </select>
+
+
+    <select id="getofflineCountRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.OfflineCountRatio">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts,NETWORKSEG AS netSegment,OFFDEVICECOUNT AS offlineCount,
+            (SELECT ROUND(AVG(OFFDEVICECOUNT),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as averageCount,
+            (SELECT MAX(OFFDEVICECOUNT) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as maxCount,
+            (SELECT OFFDEVICECOUNT/(SELECT ROUND(AVG(OFFDEVICECOUNT),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000)) as ratio
+        FROM "networksegment"
+        WHERE NETWORKSEG = ${segment}
+        AND TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-5000
+    </select>
+
+
+    <select id="getAlertCountRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.AlertFlowCountRatio">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts,NETWORKSEG AS netSegment,Alert_flow AS alertFlowCount,
+            (SELECT ROUND(AVG(Alert_flow),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as averageCount,
+            (SELECT MAX(Alert_flow) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000) as maxCount,
+            (SELECT Alert_flow/(SELECT ROUND(AVG(Alert_flow),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-60000)) as ratio
+        FROM "networksegment"
+        WHERE NETWORKSEG = ${segment}
+        AND TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-5000
+    </select>
+
+
+</mapper>
