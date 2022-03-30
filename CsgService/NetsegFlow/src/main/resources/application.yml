@@ -1,0 +1,38 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /segflow
+
+spring:
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+  application:
+    name: service-segflow
+  datasource:
+    #配置hikari连接池
+    hikari:
+      minimum-idle: 4
+      maximum-pool-size: 16
+      connection-timeout: 10000
+      idle-timeout: 30000
+      connection-init-sql: set names utf8mb
+    dynamic:
+      primary: sqlite1
+      datasource:
+        sqlite1:
+          driver-class-name: org.sqlite.JDBC
+          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV03/networksegment_2.db
+        sqlite2:
+          driver-class-name: org.sqlite.JDBC
+          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV03/flowstatistic_2.db
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.cxy.netflow.entity.netseg,com.cxy.netflow.entity.flows
+  global-config:
+    banner: true
+  mapper-locations: classpath:com/cxy/netflow/mapper/xml/*.xml

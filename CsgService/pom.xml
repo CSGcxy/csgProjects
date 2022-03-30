@@ -12,11 +12,9 @@
     <artifactId>CsgService</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>ServiceNetSeg_8081</module>
-        <module>ServiceNetFlow_8082</module>
-        <module>ServiceOffStatus_8083</module>
-        <module>ServiceCheck_8084</module>
         <module>ServiceAssess_8005</module>
+        <module>NetsegFlow</module>
+        <module>CheckOff</module>
     </modules>
 
     <dependencies>
@@ -66,6 +64,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>3.4.0</version>
         </dependency>
 
         <dependency>

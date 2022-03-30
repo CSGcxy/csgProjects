@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.checkoff.mapper.PacketCheckMapper">
+
+
+    <select id="getPacketCount" resultType="PacketCountVo">
+        SELECT afn,COUNT(afn) as count
+        FROM "test_v1"
+        where ts > (SELECT MAX(ts) FROM "test_v1") - 5
+        GROUP BY afn
+    </select>
+
+    <select id="getQualifiedCount" resultType="PacketUnQualifiedCount">
+        SELECT sum(afn=-1) unqualifiedCount,sum(afn!=-1) as qualifiedCount
+        FROM "test_v1"
+        where ts > (SELECT MAX(ts) FROM "test_v1") - 5
+    </select>
+
+
+    <select id="getDiffrentAfnCount" resultType="Afn">
+        SELECT f.afn,COUNT(*) as count
+        FROM (SELECT ts,afn
+            FROM "test_v1"
+            where ts > (SELECT MAX(ts) FROM "test_v1") - ${startTime}
+            AND ts &lt; (SELECT MAX(ts) FROM "test_v1") - ${endTime}
+            AND test_v1.afn != -1) AS f
+        GROUP BY f.afn
+    </select>
+
+
+
+    <select id="getUnqualifiedDetails" resultType="PacketDetailsVo">
+        SELECT flag,DATETIME(ts,'unixepoch','localtime') as ts,srcip,srcport,dstip,dstport,afn
+        FROM "test_v1"
+        WHERE afn = -1
+        AND ts > (SELECT MAX(ts) FROM "test_v1") - 5
+    </select>
+
+
+    <select id="getDifAfnCount" resultType="AfnPeriod">
+        SELECT period,afn,count
+        from
+            (
+                SELECT timeStamp,SUBSTR(timeStamp,0,19)||(floor(cast(SUBSTR(timeStamp,-1) as int)/${second})*${second}) period,afn,SUM(nums) count
+                from
+                    (
+                    SELECT DATETIME(ROUND(ts,0),'unixepoch','localtime') timeStamp,afn,COUNT(*) nums
+                    FROM "test_v1"
+                    where afn!=-1
+                    and ts>(SELECT MAX(ts) FROM "test_v1")-40
+                    GROUP BY timeStamp,afn
+                    )
+                GROUP BY afn,period
+                ORDER BY timeStamp
+            ) temp
+        group by afn,period
+    </select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

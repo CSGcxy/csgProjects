@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.netflow.mapper.NetworksegmentMapper">
+
+    <sql id="TerminalTotal_List" >
+        NETWORKSEG,UPBYTES,DOWNBYTES,UPRATE,DOWNRATE,Alert_flow as alertFlow,ONDEVICECOUNT,OFFDEVICECOUNT,Active_Flow_Count as activeFlowCount
+    </sql>
+    <select id="selectNetworkSegmentTerminalTotal" resultType="NetSegTotalVO">
+        SELECT
+        <include refid="TerminalTotal_List"/>
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM networksegment)
+    </select>
+
+    <sql id="CommStatus_List" >
+        IP,LOCATION,FLOWS,NAME,TotalRecvBytes,TotalBytes,RATES,LastSeen
+    </sql>
+    <select id="selectSegCommStatus" resultType="SegCommStatusVO">
+        SELECT
+        <include refid="CommStatus_List"/>
+        FROM ${segment} WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment}) ORDER BY RATES
+    </select>
+
+    <sql id="TrendStatus_List" >
+        DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp,UPRATE,DOWNRATE,ONDEVICECOUNT
+    </sql>
+    <select id="getTerminalTrendStatus" resultType="TerminalTrend">
+        SELECT
+        <include refid="TrendStatus_List"/>
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM networksegment)-3600000 ORDER BY TIMESTAMP
+    </select>
+
+    <select id="selectLocation" resultType="Location">
+        SELECT LOCATION name,COUNT(LOCATION) value
+        FROM ${segment}
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment})
+        GROUP BY LOCATION
+    </select>
+
+    <select id="getSegTotalBytes" resultType="NetSegTotalBytes">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , UPBYTES + DOWNBYTES AS TotalBytes
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM networksegment)-3600000 ORDER BY TIMESTAMP
+    </select>
+
+    <select id="getAlertFlow" resultType="AlertFlowVO">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , NETWORKSEG , Alert_flow AS alertflow
+        FROM "networksegment"
+        WHERE alertflow > 0 ORDER BY timestamp DESC
+    </select>
+
+    <select id="getSegTotalBytesByTime" resultType="NetSegTotalBytes">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp , UPBYTES + DOWNBYTES AS TotalBytes
+        from networksegment
+        WHERE NETWORKSEG=#{segment} AND TIMESTAMP BETWEEN #{startTime} AND #{endTime}
+        ORDER BY TIMESTAMP
+    </select>
+
+
+</mapper>

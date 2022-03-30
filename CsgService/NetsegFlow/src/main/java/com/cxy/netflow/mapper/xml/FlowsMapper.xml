@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.netflow.mapper.FlowsMapper">
+
+    <sql id="ActiveFlows_List">
+        APP_PROTO as appProto,PROTO as proto,SRC_IP as srcIp,DST_IP as dstIp,DURATION as duration,FRONT_RATE as frontRate,BACK_RATE as backRate,BYTE_COUNT as byteCount
+    </sql>
+    <select id="getActiveFlows" resultType="ActiveFlowsVO">
+        SELECT
+        <include refid="ActiveFlows_List"/>
+        FROM ${segment} WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP ) FROM ${segment})
+        ORDER BY BYTE_COUNT DESC
+    </select>
+
+    <sql id="FlowSankey_List">
+        SRC_IP as source, DST_IP as target, BYTE_COUNT as value
+    </sql>
+    <select id="getFlowSankey" resultType="FlowSankey">
+        SELECT
+        <include refid="FlowSankey_List"/>
+        FROM ${segment}
+        WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM ${segment})
+        ORDER BY BYTE_COUNT DESC
+        LIMIT 10
+    </select>
+
+</mapper>
