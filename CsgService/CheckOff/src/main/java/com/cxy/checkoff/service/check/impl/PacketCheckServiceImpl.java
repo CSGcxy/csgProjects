@@ -1,5 +1,6 @@
 package com.cxy.checkoff.service.check.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cxy.checkoff.entity.check.TestV1;
 import com.cxy.checkoff.entity.check.vo.*;
@@ -7,9 +8,11 @@ import com.cxy.checkoff.mapper.PacketCheckMapper;
 import com.cxy.checkoff.service.check.PacketCheckService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,20 +50,30 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
     @Override
     public AfnTimeVo getDifAfnCount(Integer second) {
         List<AfnPeriod> afnCount = packetCheckMapper.getDifAfnCount(second);
+        List<Integer> difAfns = packetCheckMapper.selectDifAfns();
+
+        Map<Integer, List<Integer>> afnMap = new HashMap<>();
+        Map<String, List<AfnPeriod>> afnListByTime = new HashMap<>();//存储每个时间段的数据
+        Set<Integer> afnSet = new HashSet<>();//记录afn种类
+
+        //记录过去最新20s内出现的合规afn种类
+        for (Integer afn : difAfns) {
+            afnMap.put(afn, new LinkedList<Integer>());
+            afnSet.add(afn);
+        }
         //使用set对日期进行去重，然后再转换为list
         Set<String> set = new HashSet<>();
-        Map<Integer, List<Integer>> map = new HashMap<>();
+
         for(AfnPeriod afn:afnCount){
             set.add(afn.getPeriod());
-            if (map.containsKey(afn.getAfn())) {
-                map.get(afn.getAfn()).add(afn.getCount());
-            } else {
-                map.put(afn.getAfn(), new LinkedList<Integer>());
-                map.get(afn.getAfn()).add(afn.getCount());
+            if (!afnListByTime.containsKey(afn.getPeriod())){
+                afnListByTime.put(afn.getPeriod(), new LinkedList<AfnPeriod>());
+                afnListByTime.get(afn.getPeriod()).add(afn);
             }
+            else afnListByTime.get(afn.getPeriod()).add(afn);
         }
-        List<String> list = new ArrayList<>(set);
         //对timelist做一个排序
+        List<String> list = new ArrayList<>(set);
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Collections.sort(list, new Comparator<String>() {
             @Override
@@ -83,9 +96,24 @@ public class PacketCheckServiceImpl extends ServiceImpl<PacketCheckMapper, TestV
             }
 
         });
+        for (String time : list) {
+            Set<Integer> temp = new HashSet<>();
+            for (Integer t : afnSet) {
+                temp.add(t);
+            }
+            List<AfnPeriod> afnPeriodList = afnListByTime.get(time);
+            for (AfnPeriod afnPeriod : afnPeriodList) {
+                afnMap.get(afnPeriod.getAfn()).add(afnPeriod.getCount());
+                temp.remove(afnPeriod.getAfn());
+            }
+            for (Integer afn : temp) {
+                afnMap.get(afn).add(0);
+            }
+        }
+
         AfnTimeVo afnTimeVo = new AfnTimeVo();
         afnTimeVo.setTimeList(list);
-        afnTimeVo.setAfnHashMap(map);
+        afnTimeVo.setAfnHashMap(afnMap);
         return afnTimeVo;
     }
 

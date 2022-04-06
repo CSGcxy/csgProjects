@@ -31,6 +31,9 @@ public interface PacketCheckMapper extends BaseMapper<TestV1> {
     // 距离最新时间每隔5秒查询不同的合格包数目
     List<AfnPeriod> getDifAfnCount(Integer second);
 
+    //查询最新20s内出现的合规afn种类
+    List<Integer> selectDifAfns();
+
     // 分页查询最近5秒内不合格packet详情
     List<PacketDetailsVo> getUnqualifiedDetails();
 

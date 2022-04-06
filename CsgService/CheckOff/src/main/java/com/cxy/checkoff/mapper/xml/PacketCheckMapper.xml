@@ -47,22 +47,18 @@
                     SELECT DATETIME(ROUND(ts,0),'unixepoch','localtime') timeStamp,afn,COUNT(*) nums
                     FROM "test_v1"
                     where afn!=-1
-                    and ts>(SELECT MAX(ts) FROM "test_v1")-40
+                    and ts>(SELECT MAX(ts) FROM "test_v1")-20
                     GROUP BY timeStamp,afn
                     )
                 GROUP BY afn,period
-                ORDER BY timeStamp
             ) temp
-        group by afn,period
+        order by period
     </select>
 
-
-
-
-
-
-
-
+    <select id="selectDifAfns" resultType="java.lang.Integer">
+        SELECT DISTINCT(afn) FROM "test_v1"
+        WHERE afn!=-1 and ts>(SELECT MAX(ts) FROM "test_v1")-20
+    </select>
 
 
 </mapper>

@@ -23,10 +23,10 @@ spring:
       datasource:
         sqlite1:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV03/networksegment_2.db
+          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV04/networksegment_2.db
         sqlite2:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV03/flowstatistic_2.db
+          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV04/flowstatistic_2.db
 
 mybatis-plus:
   configuration:
