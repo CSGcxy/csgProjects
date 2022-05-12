@@ -23,10 +23,10 @@ spring:
       datasource:
         sqlite1:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV04/test1.db
+          url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/test1.db
         sqlite2:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:E:/projects/temp/testSql/dynamicGetV04/offterminal.db
+          url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/offterminal.db
 
 mybatis-plus:
   configuration:
