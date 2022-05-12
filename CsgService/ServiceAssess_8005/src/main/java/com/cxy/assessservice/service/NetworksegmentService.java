@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.cxy.assessservice.entity.Networksegment;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
+import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface NetworksegmentService extends IService<Networksegment> {
 
 
     List<SegScoreEntityVo> getAllSegScoreDetails();
+
+    List<TerminalScoreEntityVo> getTerminalScoreDetails(String segment);
 }

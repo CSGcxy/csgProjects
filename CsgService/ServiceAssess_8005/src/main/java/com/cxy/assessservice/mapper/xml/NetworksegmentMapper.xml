@@ -62,5 +62,19 @@
         AND TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM "networksegment" WHERE NETWORKSEG = ${segment})-5000
     </select>
 
+    <select id="getTerminalTotalRateRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.TerminalTotalRateRatio">
+        SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts,IP AS ip,LOCATION AS location,UP_RATES AS uprate,DOWN_RATES AS downrate,RATES AS totalrate,
+                (SELECT ROUND(AVG(RATES),3) FROM ${segment}
+                WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-60000) as averageRate,
+                (SELECT MAX(RATES) FROM ${segment}
+                WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-60000) as maxRate,
+                (SELECT RATES/(SELECT ROUND(AVG(RATES),3) FROM ${segment}
+                WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM ${segment})-60000)) as ratio
+        FROM ${segment}
+        WHERE TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM ${segment})-5000
+        ORDER BY ratio
+        LIMIT 10
+    </select>
+
 
 </mapper>

@@ -36,4 +36,7 @@ public interface NetworksegmentMapper extends BaseMapper<Networksegment> {
 
     // 获取告警流数/平均告警流数的比值 及 告警流数 和 平均告警流数
     AlertFlowCountRatio getAlertCountRatio(String segment);
+
+    // 查询该网段下总速率/总速率的平均速率 倒数前10的终端详情
+    List<TerminalTotalRateRatio> getTerminalTotalRateRatio(String segment);
 }

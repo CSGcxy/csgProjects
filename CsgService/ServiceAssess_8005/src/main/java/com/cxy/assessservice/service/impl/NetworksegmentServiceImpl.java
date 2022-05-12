@@ -6,6 +6,7 @@ import com.cxy.assessservice.entity.Networksegment;
 import com.cxy.assessservice.entity.SafetyAssess;
 import com.cxy.assessservice.entity.vo.SegAllScore;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
+import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.*;
 import com.cxy.assessservice.mapper.NetworksegmentMapper;
 import com.cxy.assessservice.service.NetworksegmentService;
@@ -151,6 +152,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
         return segScoreEntityVoList;
     }
 
+
     public Double getTotalScore(List<Double> scoreList) {
 
         // 取出6个指标的6次取值放入二维数组quotaScoreList
@@ -189,6 +191,42 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
         return result;
     }
 
+    @Override
+    public List<TerminalScoreEntityVo> getTerminalScoreDetails(String segment) {
+        // 用于最终结果返回
+        List<TerminalScoreEntityVo> terminalScoreEntityVoList = new ArrayList<>();
 
+        // 查询比值倒数前10的终端详情
+        List<TerminalTotalRateRatio> terminalTotalRateRatioList= netSegMappper.getTerminalTotalRateRatio(segment);  // 获取总速率/总速率的平均速率
+
+        for (int i = 0;i < terminalTotalRateRatioList.size();i++) {
+            // 用于封装每一个终端的详情
+            TerminalScoreEntityVo terminalScoreEntityVo = new TerminalScoreEntityVo();
+
+            // 根据速率判定分数 封装终端总速率评分
+            if (terminalTotalRateRatioList.get(i).getRatio() >= 1) {  // 速率比平均速率大
+                Double totalrateScore = 80.0 + 20*((terminalTotalRateRatioList.get(i).getTotalrate()-terminalTotalRateRatioList.get(i).getAverageRate())/(terminalTotalRateRatioList.get(i).getMaxRate()-terminalTotalRateRatioList.get(i).getAverageRate()));
+                terminalScoreEntityVo.setTotalrateScore(totalrateScore);
+            }else if (terminalTotalRateRatioList.get(i).getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
+                Double totalrateScore = 80.0 - 80*((terminalTotalRateRatioList.get(i).getAverageRate()-terminalTotalRateRatioList.get(i).getUprate())/terminalTotalRateRatioList.get(i).getAverageRate());
+                terminalScoreEntityVo.setTotalrateScore(totalrateScore);
+            }else {
+                terminalScoreEntityVo.setTotalrateScore(40.0);
+            }
+
+            // 封装终端详情信息
+            terminalScoreEntityVo.setIp(terminalTotalRateRatioList.get(i).getIp());
+            terminalScoreEntityVo.setTs(terminalTotalRateRatioList.get(i).getTs());
+            terminalScoreEntityVo.setLocation(terminalTotalRateRatioList.get(i).getLocation());
+            terminalScoreEntityVo.setUprate(terminalTotalRateRatioList.get(i).getUprate());
+            terminalScoreEntityVo.setDownrate(terminalTotalRateRatioList.get(i).getDownrate());
+            terminalScoreEntityVo.setTotalrate(terminalTotalRateRatioList.get(i).getTotalrate());
+
+            // 将封装结果set进返回对象
+            terminalScoreEntityVoList.add(terminalScoreEntityVo);
+        }
+
+        return terminalScoreEntityVoList;
+    }
 
 }
