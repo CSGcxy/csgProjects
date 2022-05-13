@@ -52,6 +52,9 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
              * 统计  上行速率  指标打分
              */
             UpRateRatio upRateRatio = netSegMappper.getuprateRatio('"' + segList.get(i) + '"');  // 获取上行速率/平均速率
+            // 查询结果为空则跳过
+            if(upRateRatio == null) continue;
+
             // 根据速率判定分数
             if (upRateRatio.getRatio() >= 1) {  // 速率比平均速率大
                 Double uprateScore = 80.0 + 20*((upRateRatio.getUprate()-upRateRatio.getAverageRate())/(upRateRatio.getMaxRate()-upRateRatio.getAverageRate()));
@@ -68,6 +71,9 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
              * 统计  下行速率  指标打分
              */
             DownRateRatio downRateRatio = netSegMappper.getdownrateRatio('"' + segList.get(i) + '"');  // 获取上行速率/平均速率
+            // 查询结果为空则跳过
+            if(downRateRatio == null) continue;
+
             // 根据速率判定分数
             if (downRateRatio.getRatio() >= 1) {  // 速率比平均速率大
                 Double downrateScore = 80.0 + 20*((downRateRatio.getDownrate()-downRateRatio.getAverageRate())/(downRateRatio.getMaxRate()-downRateRatio.getAverageRate()));
@@ -83,6 +89,10 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
              * 统计  在线终端数  指标打分
              */
             OnlineCountRatio onlineCountRatio = netSegMappper.getonlineCountRatio('"' + segList.get(i) + '"');  // 获取上行速率/平均速率
+
+            // 查询结果为空则跳过
+            if(onlineCountRatio == null) continue;
+
             // 根据速率判定分数
             if (onlineCountRatio.getRatio() >= 1) {  // 速率比平均速率大
                 Double onlineCountScore = 80.0 + 20*((onlineCountRatio.getOnlineCount()-onlineCountRatio.getAverageCount())/(onlineCountRatio.getMaxCount()-onlineCountRatio.getAverageCount()));
@@ -99,6 +109,10 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
              * 统计  离线终端数  指标打分
              */
             OfflineCountRatio offlineCountRatio = netSegMappper.getofflineCountRatio('"' + segList.get(i) + '"');  // 获取上行速率/平均速率
+
+            // 查询结果为空则跳过
+            if(offlineCountRatio == null) continue;
+
             // 根据速率判定分数
             if (offlineCountRatio.getRatio() >= 1.5) {  // 速率比平均速率大
                 segAllScore.setOffdevicecountScore(40.0);
@@ -118,6 +132,10 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
              * 统计  告警流数  指标打分
              */
             AlertFlowCountRatio alertFlowCountRatio = netSegMappper.getAlertCountRatio('"' + segList.get(i) + '"');  // 获取上行速率/平均速率
+
+            // 查询结果为空则跳过
+            if(alertFlowCountRatio == null) continue;
+
             // 根据速率判定分数
             if (alertFlowCountRatio.getAlertFlowCount() == 0) {  // 速率比平均速率大
                 segAllScore.setAlertflowScore(95.0);
