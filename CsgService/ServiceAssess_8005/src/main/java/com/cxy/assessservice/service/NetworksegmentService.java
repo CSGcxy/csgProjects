@@ -21,5 +21,5 @@ public interface NetworksegmentService extends IService<Networksegment> {
 
     List<SegScoreEntityVo> getAllSegScoreDetails();
 
-    List<TerminalScoreEntityVo> getTerminalScoreDetails(String segment);
+    List<TerminalScoreEntityVo> getTerminalScoreDetails(List<SegScoreEntityVo> segScoreEntityVoList);
 }

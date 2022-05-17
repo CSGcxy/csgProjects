@@ -210,12 +210,19 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     }
 
     @Override
-    public List<TerminalScoreEntityVo> getTerminalScoreDetails(String segment) {
+    public List<TerminalScoreEntityVo> getTerminalScoreDetails(List<SegScoreEntityVo> segScoreEntityVoList) {
         // 用于最终结果返回
         List<TerminalScoreEntityVo> terminalScoreEntityVoList = new ArrayList<>();
 
-        // 查询比值倒数前10的终端详情
-        List<TerminalTotalRateRatio> terminalTotalRateRatioList= netSegMappper.getTerminalTotalRateRatio(segment);  // 获取总速率/总速率的平均速率
+        // 查询比值倒数前10的各网段下的终端详情
+        List<TerminalTotalRateRatio> terminalTotalRateRatioList = new ArrayList<>();
+        for (int i = 0;i < segScoreEntityVoList.size();i++) {
+            // 获取总速率/总速率的平均速率
+            List<TerminalTotalRateRatio> segmentTerminalsDetails = netSegMappper.getTerminalTotalRateRatio(segScoreEntityVoList.get(i).getSegment());
+            for (TerminalTotalRateRatio terminalTotalRateRatio : segmentTerminalsDetails) {
+                terminalTotalRateRatioList.add(terminalTotalRateRatio);
+            }
+        }
 
         for (int i = 0;i < terminalTotalRateRatioList.size();i++) {
             // 用于封装每一个终端的详情
