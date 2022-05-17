@@ -173,7 +173,11 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                 segScoreEntityVoList.add(segScoreEntityVo);
             }
 
-            fiveTimeRangeScore.add(segScoreEntityVoList);
+            if (segScoreEntityVoList.isEmpty()) {  // 当前时间段没有任何网段下有数据则跳过 不加入结果集
+                continue;
+            }else {  // 查询到数据则放入结果集
+                fiveTimeRangeScore.add(segScoreEntityVoList);
+            }
         }
 
         return fiveTimeRangeScore;
