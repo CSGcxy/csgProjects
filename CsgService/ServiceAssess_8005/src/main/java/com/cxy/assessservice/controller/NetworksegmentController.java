@@ -3,9 +3,11 @@ package com.cxy.assessservice.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
 import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
+import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
 import com.cxy.assessservice.service.NetworksegmentService;
 import com.cxy.assessservice.service.SafetyAssessService;
 import com.cxy.commonutils.R;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +63,14 @@ public class NetworksegmentController {
      * <p>根据入参  网段名  查询该网段下总速率评分倒数10名  的终端信息   包括 时间 ip 位置 上行速率 下行速率 总速率 总速率的评分(依据上行速率、下行速率和总速率的评分结合熵值法确定)</p>
      */
     @ApiOperation(value = "查询安全评估页面 输入网段 下的速率综合评分倒数前10的终端信息")
-    @GetMapping("/getTerminalTotalRateScore")
-    public R getTerminalTotalRateScore() {
+    @GetMapping("/getTerminalTotalRateScore/{pageNum}/{pageSize}")
+    public R getTerminalTotalRateScore(@PathVariable Integer pageNum,
+                                       @PathVariable Integer pageSize) {
 
         List<List<SegScoreEntityVo>>  segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
-        List<TerminalScoreEntityVo> terminalScoreEntityVoList = networksegmentService.getTerminalScoreDetails(segScoreEntityVoList);  // 返回各网段的6个指标评分及总分
+        PageInfoVo pageInfoVo = networksegmentService.getTerminalScoreDetails(segScoreEntityVoList,pageNum,pageSize);  // 返回各网段的6个指标评分及总分
 
-        return R.ok().data("terminalScoreEntityVoList",terminalScoreEntityVoList);
+        return R.ok().data("pageInfoVo",pageInfoVo);
     }
 
 }

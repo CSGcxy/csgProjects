@@ -3,7 +3,6 @@ package com.cxy.assessservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.cxy.assessservice.entity.Networksegment;
-import com.cxy.assessservice.entity.SafetyAssess;
 import com.cxy.assessservice.entity.vo.SegAllScore;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
 import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
@@ -11,6 +10,7 @@ import com.cxy.assessservice.entity.vo.ratioEntity.*;
 import com.cxy.assessservice.mapper.NetworksegmentMapper;
 import com.cxy.assessservice.service.NetworksegmentService;
 import com.cxy.assessservice.utils.Entroy;
+import com.cxy.assessservice.utils.ListPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -219,7 +219,8 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     }
 
     @Override
-    public List<TerminalScoreEntityVo> getTerminalScoreDetails(List<List<SegScoreEntityVo>> segScoreEntityVoList) {
+    public PageInfoVo getTerminalScoreDetails(List<List<SegScoreEntityVo>> segScoreEntityVoList,Integer pageNum,Integer pageSize) {
+
         // 用于最终结果返回
         List<TerminalScoreEntityVo> terminalScoreEntityVoList = new ArrayList<>();
 
@@ -277,7 +278,20 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
             terminalScoreEntityVoList.add(terminalScoreEntityVo);
         }
 
-        return terminalScoreEntityVoList;
-    }
+        // 截取分页查询的结果并封装
+        List<TerminalScoreEntityVo> terminalScoreEntityVoPage = ListPage.startPage(terminalScoreEntityVoList,pageNum,pageSize);
 
+        // 封装分页查询结果并返回查询总数(是总记录数 不是分页查询的记录数)
+        PageInfoVo pageInfoVo = new PageInfoVo();
+        pageInfoVo.setTerminalScoreEntityVoPage(terminalScoreEntityVoPage);
+        pageInfoVo.setTotalNum(terminalScoreEntityVoList.size());
+        pageInfoVo.setPageNum(pageNum);
+        pageInfoVo.setPageSize(pageSize);
+        pageInfoVo.setCurPageSize(terminalScoreEntityVoPage.size());
+        pageInfoVo.setStartRow(pageSize*(pageNum-1) + 1);
+        pageInfoVo.setEndRow(pageSize*(pageNum));
+        pageInfoVo.setTotalPageNum(pageInfoVo.getTotalNum()/pageInfoVo.getPageSize()+1);
+
+        return pageInfoVo;
+    }
 }

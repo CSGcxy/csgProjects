@@ -73,7 +73,7 @@
         FROM ${segment}
         WHERE TIMESTAMP> (SELECT MAX(TIMESTAMP) FROM ${segment})-60000
         ORDER BY ratio
-        LIMIT 20
+        LIMIT 100
     </select>
 
 
