@@ -19,7 +19,7 @@ import java.util.List;
 public interface NetworksegmentService extends IService<Networksegment> {
 
 
-    List<SegScoreEntityVo> getAllSegScoreDetails();
+    List<List<SegScoreEntityVo>> getAllSegScoreDetails();
 
-    List<TerminalScoreEntityVo> getTerminalScoreDetails(List<SegScoreEntityVo> segScoreEntityVoList);
+    List<TerminalScoreEntityVo> getTerminalScoreDetails(List<List<SegScoreEntityVo>> segScoreEntityVoList);
 }

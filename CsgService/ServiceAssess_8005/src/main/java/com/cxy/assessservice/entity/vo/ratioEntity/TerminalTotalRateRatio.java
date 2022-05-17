@@ -39,4 +39,7 @@ public class TerminalTotalRateRatio {
 
     // 总速率得分
     private Double totalrateScore;
+
+    // 网段
+    private String segment;
 }

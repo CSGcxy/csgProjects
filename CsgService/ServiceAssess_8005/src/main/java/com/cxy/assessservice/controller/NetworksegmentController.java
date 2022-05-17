@@ -52,7 +52,7 @@ public class NetworksegmentController {
     @GetMapping("/getSegAssessScore")
     public R getAssessScore() {
 
-        List<SegScoreEntityVo> segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
+        List<List<SegScoreEntityVo>> segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
 
         return R.ok().data("segScoreEntityVoList",segScoreEntityVoList);
     }
@@ -64,7 +64,7 @@ public class NetworksegmentController {
     @GetMapping("/getTerminalTotalRateScore")
     public R getTerminalTotalRateScore() {
 
-        List<SegScoreEntityVo> segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
+        List<List<SegScoreEntityVo>>  segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
         List<TerminalScoreEntityVo> terminalScoreEntityVoList = networksegmentService.getTerminalScoreDetails(segScoreEntityVoList);  // 返回各网段的6个指标评分及总分
 
         return R.ok().data("terminalScoreEntityVoList",terminalScoreEntityVoList);

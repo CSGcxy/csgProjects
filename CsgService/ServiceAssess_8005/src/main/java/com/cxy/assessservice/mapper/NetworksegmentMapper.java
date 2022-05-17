@@ -23,19 +23,19 @@ public interface NetworksegmentMapper extends BaseMapper<Networksegment> {
     List<String> getSegList();
 
     // 获取上行速率/平均速率的比值 及 速率 和 平均速率
-    UpRateRatio getuprateRatio(String segment);
+    UpRateRatio getuprateRatio(String segment,int timeIndex);
 
     // 获取下行速率/平均速率的比值 及 速率 和 平均速率
-    DownRateRatio getdownrateRatio(String segment);
+    DownRateRatio getdownrateRatio(String segment,int timeIndex);
 
     // 获取在线终端数/平均在线终端数的比值 及 在线终端数 和 平均在线终端数
-    OnlineCountRatio getonlineCountRatio(String segment);
+    OnlineCountRatio getonlineCountRatio(String segment,int timeIndex);
 
     // 获取离线终端数/平均离线终端数的比值 及 离线终端数 和 平均离线终端数
-    OfflineCountRatio getofflineCountRatio(String segment);
+    OfflineCountRatio getofflineCountRatio(String segment,int timeIndex);
 
     // 获取告警流数/平均告警流数的比值 及 告警流数 和 平均告警流数
-    AlertFlowCountRatio getAlertCountRatio(String segment);
+    AlertFlowCountRatio getAlertCountRatio(String segment,int timeIndex);
 
     // 查询该网段下总速率/总速率的平均速率 倒数前10的终端详情
     List<TerminalTotalRateRatio> getTerminalTotalRateRatio(String segment);

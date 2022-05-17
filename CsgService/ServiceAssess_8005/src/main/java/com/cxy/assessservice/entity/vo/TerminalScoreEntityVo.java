@@ -29,4 +29,7 @@ public class TerminalScoreEntityVo {
 
     // 总速率得分
     private Double totalrateScore;
+
+    // 网段名
+    private String segment;
 }
