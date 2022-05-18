@@ -76,5 +76,11 @@
         LIMIT 100
     </select>
 
+    <select id="getTimeArray" resultType="java.lang.String">
+        SELECT DISTINCT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') AS ts
+        FROM "networksegment"
+        WHERE TIMESTAMP >= (SELECT MAX(TIMESTAMP) FROM "networksegment")-50000
+        ORDER BY ts
+    </select>
 
 </mapper>

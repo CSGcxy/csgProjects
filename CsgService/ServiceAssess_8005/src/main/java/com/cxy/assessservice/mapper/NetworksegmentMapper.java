@@ -39,4 +39,7 @@ public interface NetworksegmentMapper extends BaseMapper<Networksegment> {
 
     // 查询该网段下总速率/总速率的平均速率 倒数前10的终端详情
     List<TerminalTotalRateRatio> getTerminalTotalRateRatio(String segment);
+
+    // 查询最近5s*10=50s内时间数组
+    List<String> getTimeArray();
 }

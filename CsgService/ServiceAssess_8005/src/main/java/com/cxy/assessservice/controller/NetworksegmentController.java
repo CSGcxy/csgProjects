@@ -1,6 +1,7 @@
 package com.cxy.assessservice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
 import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
@@ -54,9 +55,9 @@ public class NetworksegmentController {
     @GetMapping("/getSegAssessScore")
     public R getAssessScore() {
 
-        List<List<SegScoreEntityVo>> segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
+        SegScoreAllTimeVo segScoreAllTimeVo = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
 
-        return R.ok().data("segScoreEntityVoList",segScoreEntityVoList);
+        return R.ok().data("segScoreAllTimeVo",segScoreAllTimeVo);
     }
 
     /**
@@ -67,7 +68,7 @@ public class NetworksegmentController {
     public R getTerminalTotalRateScore(@PathVariable Integer pageNum,
                                        @PathVariable Integer pageSize) {
 
-        List<List<SegScoreEntityVo>>  segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
+        SegScoreAllTimeVo  segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
         PageInfoVo pageInfoVo = networksegmentService.getTerminalScoreDetails(segScoreEntityVoList,pageNum,pageSize);  // 返回各网段的6个指标评分及总分
 
         return R.ok().data("pageInfoVo",pageInfoVo);

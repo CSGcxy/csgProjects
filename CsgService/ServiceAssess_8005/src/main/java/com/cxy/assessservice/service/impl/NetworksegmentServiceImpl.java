@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.cxy.assessservice.entity.Networksegment;
 import com.cxy.assessservice.entity.vo.SegAllScore;
+import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
 import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.*;
@@ -38,9 +39,9 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
 
     @Override
-    public List<List<SegScoreEntityVo>> getAllSegScoreDetails() {
+    public SegScoreAllTimeVo getAllSegScoreDetails() {
 
-        List<List<SegScoreEntityVo>> fiveTimeRangeScore = new ArrayList<>();
+        List<List<SegScoreEntityVo>> timeRangeScore = new ArrayList<>();
 
         for (int k = 1;k < 11;k++) {
 
@@ -173,14 +174,22 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                 segScoreEntityVoList.add(segScoreEntityVo);
             }
 
-            if (segScoreEntityVoList.isEmpty()) {  // 当前时间段没有任何网段下有数据则跳过 不加入结果集
-                continue;
-            }else {  // 查询到数据则放入结果集
-                fiveTimeRangeScore.add(segScoreEntityVoList);
-            }
+//            if (segScoreEntityVoList.isEmpty()) {  // 当前时间段没有任何网段下有数据则跳过 不加入结果集
+//                continue;
+//            }else {  // 查询到数据则放入结果集
+//                timeRangeScore.add(segScoreEntityVoList);
+//            }
+            timeRangeScore.add(segScoreEntityVoList);
         }
 
-        return fiveTimeRangeScore;
+        // 查询最近5s*10=50s的时间数组
+        List<String> timeArray = netSegMappper.getTimeArray();
+
+        SegScoreAllTimeVo segScoreAllTimeVo = new SegScoreAllTimeVo();
+        segScoreAllTimeVo.setTimeRangeScore(timeRangeScore);
+        segScoreAllTimeVo.setTimeArray(timeArray);
+
+        return segScoreAllTimeVo;
     }
 
 
@@ -223,7 +232,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
     }
 
     @Override
-    public PageInfoVo getTerminalScoreDetails(List<List<SegScoreEntityVo>> segScoreEntityVoList,Integer pageNum,Integer pageSize) {
+    public PageInfoVo getTerminalScoreDetails(SegScoreAllTimeVo segScoreEntityVoList,Integer pageNum,Integer pageSize) {
 
         // 用于最终结果返回
         List<TerminalScoreEntityVo> terminalScoreEntityVoList = new ArrayList<>();
@@ -231,25 +240,25 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
         // 查找最近5s*10=60s范围内哪个5s的间段出现的网段数目多
         int mIndex = 0;
         int mLength = 0;
-        for (int q = 0;q < segScoreEntityVoList.size();q++) {
+        for (int q = 0;q < segScoreEntityVoList.getTimeRangeScore().size();q++) {
             // 如果当前时间段的长度(出现的网段个数) > 目前出现的最大的网段个数
-            if (segScoreEntityVoList.get(q).size() > mLength) {
+            if (segScoreEntityVoList.getTimeRangeScore().get(q).size() > mLength) {
                 mIndex = q;  // 更新出现网段个数最大的时间段的索引值 为 当前时间段的索引值
-                mLength = Integer.max(mLength,segScoreEntityVoList.get(q).size());
+                mLength = Integer.max(mLength,segScoreEntityVoList.getTimeRangeScore().get(q).size());
             }
         }
 
         // 查询比值倒数前10的各网段下的终端详情
         List<TerminalTotalRateRatio> terminalTotalRateRatioList = new ArrayList<>();
-        for (int i = 0;i < segScoreEntityVoList.get(mIndex).size();i++) {
+        for (int i = 0;i < segScoreEntityVoList.getTimeRangeScore().get(mIndex).size();i++) {
             // 先判断该网段最近5s*10=60s有没有数据 没有则跳过
-            if (segScoreEntityVoList.get(0).isEmpty()) continue;
+            if (segScoreEntityVoList.getTimeRangeScore().get(0).isEmpty()) continue;
 
             // 获取总速率/总速率的平均速率  get(0)是在查最近5s对应的List  get(mIndex)是在查最近5s*mIndex对应的List(它下面网段最多) get(i)是在查该List下第i个网段的详细信息
-            List<TerminalTotalRateRatio> segmentTerminalsDetails = netSegMappper.getTerminalTotalRateRatio(segScoreEntityVoList.get(mIndex).get(i).getSegment());
+            List<TerminalTotalRateRatio> segmentTerminalsDetails = netSegMappper.getTerminalTotalRateRatio(segScoreEntityVoList.getTimeRangeScore().get(mIndex).get(i).getSegment());
             for (TerminalTotalRateRatio terminalTotalRateRatio : segmentTerminalsDetails) {
                 // 把网段名set进去
-                terminalTotalRateRatio.setSegment(segScoreEntityVoList.get(mIndex).get(i).getSegment());
+                terminalTotalRateRatio.setSegment(segScoreEntityVoList.getTimeRangeScore().get(mIndex).get(i).getSegment());
                 terminalTotalRateRatioList.add(terminalTotalRateRatio);
             }
         }
