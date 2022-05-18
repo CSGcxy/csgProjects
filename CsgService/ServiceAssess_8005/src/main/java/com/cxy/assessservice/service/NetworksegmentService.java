@@ -9,6 +9,7 @@ import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
 import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
 public interface NetworksegmentService extends IService<Networksegment> {
 
 
-    SegScoreAllTimeVo getAllSegScoreDetails();
+    SegScoreAllTimeVo getAllSegScoreDetails() throws ParseException;
 
     PageInfoVo getTerminalScoreDetails(SegScoreAllTimeVo segScoreEntityVoList, Integer pageNum, Integer pageSize);
 }

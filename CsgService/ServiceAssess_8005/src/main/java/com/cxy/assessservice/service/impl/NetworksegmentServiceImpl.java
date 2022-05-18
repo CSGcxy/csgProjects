@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,18 +37,23 @@ import java.util.List;
 @Slf4j
 public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper, Networksegment> implements NetworksegmentService {
 
-
     @Autowired
     private NetworksegmentMapper netSegMappper;
 
 
     @Override
-    public SegScoreAllTimeVo getAllSegScoreDetails() {
+    public SegScoreAllTimeVo getAllSegScoreDetails() throws ParseException {
 
         List<List<SegScoreEntityVo>> timeRangeScore = new ArrayList<>();
 
         // 查询最近5s*10=50s的时间数组
         List<String> timeArray = netSegMappper.getTimeArray();
+        System.out.println("最早时间为" + timeArray.get(0));
+        // 取出该数组中最早的时间
+        String earliestTimestr = timeArray.get(0);
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long earliestTime = df.parse(earliestTimestr).getTime();
+        System.out.println("---------最早时间：" + earliestTime);
 
         // 查询10分钟内出现的网段
         List<String> segList = netSegMappper.getSegList();
@@ -55,6 +63,36 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
             List<SegScoreEntityVo> segScoreEntityVoList = new ArrayList<>();
 
+            List<UpRateRatio> upRateRatioList = new ArrayList<>(); // 获取上行速率/平均速率List
+            List<DownRateRatio> downRateRatioList = new ArrayList<>();;  // 获取上行速率/平均速率List
+            List<OnlineCountRatio> onlineCountRatioList = new ArrayList<>();;  // 获取上行速率/平均速率List
+            List<OfflineCountRatio> offlineCountRatioList = new ArrayList<>();;  // 获取上行速率/平均速率List
+            List<AlertFlowCountRatio> alertFlowCountRatioList = new ArrayList<>();;  // 获取上行速率/平均速率List
+
+            /**
+             * 统计  上行速率  指标打分
+             */
+            upRateRatioList = netSegMappper.getuprateRatio('"' + segList.get(i) + '"',earliestTime);  // 获取上行速率/平均速率
+            /**
+             * 统计  下行速率  指标打分
+             */
+            downRateRatioList = netSegMappper.getdownrateRatio('"' + segList.get(i) + '"',earliestTime);  // 获取上行速率/平均速率
+            /**
+             * 统计  在线终端数  指标打分
+             */
+            onlineCountRatioList = netSegMappper.getonlineCountRatio('"' + segList.get(i) + '"',earliestTime);  // 获取上行速率/平均速率
+            /**
+             * 统计  离线终端数  指标打分
+             */
+            offlineCountRatioList = netSegMappper.getofflineCountRatio('"' + segList.get(i) + '"',earliestTime);  // 获取上行速率/平均速率
+            /**
+             * 统计  告警流数  指标打分
+             */
+            alertFlowCountRatioList = netSegMappper.getAlertCountRatio('"' + segList.get(i) + '"',earliestTime);  // 获取上行速率/平均速率
+
+
+            System.out.println(upRateRatioList);
+
             // 返回8个时间段的数据
             for (int k = 0;k < 8;k++) {
                 // new 一个返回对象 存储网段的名称 总分 各项分
@@ -62,106 +100,136 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                 segScoreEntityVo.setSegment(segList.get(i)); // 赋值网段名
                 SegAllScore segAllScore = new SegAllScore();
 
-                /**
-                 * 统计  上行速率  指标打分
-                 */
-                UpRateRatio upRateRatio = netSegMappper.getuprateRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
 
-                // 查询结果为空则设置为0
-                // 根据速率判定分数
-                if (upRateRatio == null) {
+                System.out.println("查看本次遍历的时间" + timeArray.get(k));
+                int curIndex = 10;
+                for (int v = 0;v < upRateRatioList.size();v++) {
+                    if (upRateRatioList.get(v).getTs().equals(timeArray.get(k))) {
+                        curIndex = v;
+                        break;
+                    }
+                }
+
+                if (curIndex != 10) {
+                    System.out.println("查看本次查询到的时间" + upRateRatioList.get(curIndex).getTs());
+                }
+
+                System.out.println("查看" + curIndex);
+
+                if (curIndex != 10) {
+
+                    /**
+                     * 统计  上行速率  指标打分
+                     */
+//                UpRateRatio upRateRatio = netSegMappper.getuprateRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
+
+                    // 查询结果为空则设置为0
+                    // 根据速率判定分数
+                    if (upRateRatioList.get(curIndex) == null) {
+                        segAllScore.setUprateScore(0.0);
+                    }else if (upRateRatioList.get(curIndex).getRatio() >= 1) {  // 速率比平均速率大
+                        Double uprateScore = 80.0 + 20*((upRateRatioList.get(curIndex).getUprate()-upRateRatioList.get(curIndex).getAverageRate())/(upRateRatioList.get(curIndex).getMaxRate()-upRateRatioList.get(curIndex).getAverageRate()));
+                        segAllScore.setUprateScore(uprateScore);
+                    }else if (upRateRatioList.get(curIndex).getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
+                        Double uprateScore = 80.0 - 80*((upRateRatioList.get(curIndex).getAverageRate()-upRateRatioList.get(curIndex).getUprate())/upRateRatioList.get(curIndex).getAverageRate());
+                        segAllScore.setUprateScore(uprateScore);
+                    }else {
+                        segAllScore.setUprateScore(40.0);
+                    }
+
+
+                    /**
+                     * 统计  下行速率  指标打分
+                     */
+//                DownRateRatio downRateRatio = netSegMappper.getdownrateRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
+
+                    // 根据速率判定分数
+                    if (downRateRatioList.get(curIndex) == null) {
+                        segAllScore.setDownrateScore(0.0);
+                    }else if (downRateRatioList.get(curIndex).getRatio() >= 1) {  // 速率比平均速率大
+                        Double downrateScore = 80.0 + 20*((downRateRatioList.get(curIndex).getDownrate()-downRateRatioList.get(curIndex).getAverageRate())/(downRateRatioList.get(curIndex).getMaxRate()-downRateRatioList.get(curIndex).getAverageRate()));
+                        segAllScore.setDownrateScore(downrateScore);
+                    }else if (downRateRatioList.get(curIndex).getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
+                        Double downrateScore = 80.0 - 80*((downRateRatioList.get(curIndex).getAverageRate()-downRateRatioList.get(curIndex).getDownrate())/downRateRatioList.get(curIndex).getAverageRate());
+                        segAllScore.setDownrateScore(downrateScore);
+                    }else {
+                        segAllScore.setDownrateScore(40.0);
+                    }
+
+                    /**
+                     * 统计  在线终端数  指标打分
+                     */
+//                OnlineCountRatio onlineCountRatio = netSegMappper.getonlineCountRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
+
+                    // 根据速率判定分数
+                    if (onlineCountRatioList.get(curIndex) == null) {
+                        segAllScore.setOndevicecountScore(0.0);
+                    }else if (onlineCountRatioList.get(curIndex).getRatio() >= 1) {  // 速率比平均速率大
+                        Double onlineCountScore = 80.0 + 20*((onlineCountRatioList.get(curIndex).getOnlineCount()-onlineCountRatioList.get(curIndex).getAverageCount())/(onlineCountRatioList.get(curIndex).getMaxCount()-onlineCountRatioList.get(curIndex).getAverageCount()));
+                        segAllScore.setOndevicecountScore(onlineCountScore);
+                    }else if (onlineCountRatioList.get(curIndex).getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
+                        Double onlineCountScore = 80.0 - 80*((onlineCountRatioList.get(curIndex).getAverageCount()-onlineCountRatioList.get(curIndex).getOnlineCount())/onlineCountRatioList.get(curIndex).getAverageCount());
+                        segAllScore.setOndevicecountScore(onlineCountScore);
+                    }else {
+                        segAllScore.setOndevicecountScore(40.0);
+                    }
+
+
+                    /**
+                     * 统计  离线终端数  指标打分
+                     */
+//                OfflineCountRatio offlineCountRatio = netSegMappper.getofflineCountRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
+
+                    // 根据速率判定分数
+                    if (offlineCountRatioList.get(curIndex) == null) {
+                        segAllScore.setOffdevicecountScore(0.0);
+                    }else if (offlineCountRatioList.get(curIndex).getRatio() >= 1.5) {  // 速率比平均速率大
+                        segAllScore.setOffdevicecountScore(40.0);
+                    }else if (offlineCountRatioList.get(curIndex).getRatio() >= 1.3) {  // 速率小于平均速率 大于1/2平均速率
+                        segAllScore.setOffdevicecountScore(60.0);
+                    }else if (offlineCountRatioList.get(curIndex).getRatio() >= 1){
+                        Double molecule = offlineCountRatioList.get(curIndex).getOfflineCount()-offlineCountRatioList.get(curIndex).getAverageCount();
+                        Double denominator = offlineCountRatioList.get(curIndex).getMaxCount()-offlineCountRatioList.get(curIndex).getAverageCount();
+                        Double offlineCountScore = 80.0 - 80*(molecule/denominator);
+                        segAllScore.setOffdevicecountScore(offlineCountScore);
+                    }else {
+                        Double offlineCountScore = 80 + 20*((offlineCountRatioList.get(curIndex).getAverageCount()-offlineCountRatioList.get(curIndex).getOfflineCount())/offlineCountRatioList.get(curIndex).getAverageCount());
+                        segAllScore.setOffdevicecountScore(offlineCountScore);
+                    }
+
+                    /**
+                     * 统计  告警流数  指标打分
+                     */
+//                AlertFlowCountRatio alertFlowCountRatio = netSegMappper.getAlertCountRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
+
+                    // 根据速率判定分数
+                    if (alertFlowCountRatioList.get(curIndex) == null) {
+                        segAllScore.setAlertflowScore(0.0);
+                    }else if (alertFlowCountRatioList.get(curIndex).getAlertFlowCount() == 0) {  // 速率比平均速率大
+                        segAllScore.setAlertflowScore(95.0);
+                    }else {
+                        Double alertCountScore = 80.0 * Math.pow(Math.E, -alertFlowCountRatioList.get(curIndex).getAlertFlowCount());
+                        segAllScore.setAlertflowScore(alertCountScore);
+                    }
+
+                    if (segAllScore.getUprateScore().equals(0.0)) {
+                        segAllScore.setActiveflowScore(0.0);
+                    }else {
+                        segAllScore.setActiveflowScore(95.0);
+                    }
+                    segScoreEntityVo.setSegAllScore(segAllScore);
+
+                }
+                if(curIndex == 10) {
                     segAllScore.setUprateScore(0.0);
-                }else if (upRateRatio.getRatio() >= 1) {  // 速率比平均速率大
-                    Double uprateScore = 80.0 + 20*((upRateRatio.getUprate()-upRateRatio.getAverageRate())/(upRateRatio.getMaxRate()-upRateRatio.getAverageRate()));
-                    segAllScore.setUprateScore(uprateScore);
-                }else if (upRateRatio.getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
-                    Double uprateScore = 80.0 - 80*((upRateRatio.getAverageRate()-upRateRatio.getUprate())/upRateRatio.getAverageRate());
-                    segAllScore.setUprateScore(uprateScore);
-                }else {
-                    segAllScore.setUprateScore(40.0);
-                }
-
-
-                /**
-                 * 统计  下行速率  指标打分
-                 */
-                DownRateRatio downRateRatio = netSegMappper.getdownrateRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
-
-                // 根据速率判定分数
-                if (downRateRatio == null) {
                     segAllScore.setDownrateScore(0.0);
-                }else if (downRateRatio.getRatio() >= 1) {  // 速率比平均速率大
-                    Double downrateScore = 80.0 + 20*((downRateRatio.getDownrate()-downRateRatio.getAverageRate())/(downRateRatio.getMaxRate()-downRateRatio.getAverageRate()));
-                    segAllScore.setDownrateScore(downrateScore);
-                }else if (downRateRatio.getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
-                    Double downrateScore = 80.0 - 80*((downRateRatio.getAverageRate()-downRateRatio.getDownrate())/downRateRatio.getAverageRate());
-                    segAllScore.setDownrateScore(downrateScore);
-                }else {
-                    segAllScore.setDownrateScore(40.0);
-                }
-
-                /**
-                 * 统计  在线终端数  指标打分
-                 */
-                OnlineCountRatio onlineCountRatio = netSegMappper.getonlineCountRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
-
-                // 根据速率判定分数
-                if (onlineCountRatio == null) {
                     segAllScore.setOndevicecountScore(0.0);
-                }else if (onlineCountRatio.getRatio() >= 1) {  // 速率比平均速率大
-                    Double onlineCountScore = 80.0 + 20*((onlineCountRatio.getOnlineCount()-onlineCountRatio.getAverageCount())/(onlineCountRatio.getMaxCount()-onlineCountRatio.getAverageCount()));
-                    segAllScore.setOndevicecountScore(onlineCountScore);
-                }else if (onlineCountRatio.getRatio() >= 0.5) {  // 速率小于平均速率 大于1/2平均速率
-                    Double onlineCountScore = 80.0 - 80*((onlineCountRatio.getAverageCount()-onlineCountRatio.getOnlineCount())/onlineCountRatio.getAverageCount());
-                    segAllScore.setOndevicecountScore(onlineCountScore);
-                }else {
-                    segAllScore.setOndevicecountScore(40.0);
-                }
-
-
-                /**
-                 * 统计  离线终端数  指标打分
-                 */
-                OfflineCountRatio offlineCountRatio = netSegMappper.getofflineCountRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
-
-                // 根据速率判定分数
-                if (offlineCountRatio == null) {
                     segAllScore.setOffdevicecountScore(0.0);
-                }else if (offlineCountRatio.getRatio() >= 1.5) {  // 速率比平均速率大
-                    segAllScore.setOffdevicecountScore(40.0);
-                }else if (offlineCountRatio.getRatio() >= 1.3) {  // 速率小于平均速率 大于1/2平均速率
-                    segAllScore.setOffdevicecountScore(60.0);
-                }else if (offlineCountRatio.getRatio() >= 1){
-                    Double molecule = offlineCountRatio.getOfflineCount()-offlineCountRatio.getAverageCount();
-                    Double denominator = offlineCountRatio.getMaxCount()-offlineCountRatio.getAverageCount();
-                    Double offlineCountScore = 80.0 - 80*(molecule/denominator);
-                    segAllScore.setOffdevicecountScore(offlineCountScore);
-                }else {
-                    Double offlineCountScore = 80 + 20*((offlineCountRatio.getAverageCount()-offlineCountRatio.getOfflineCount())/offlineCountRatio.getAverageCount());
-                    segAllScore.setOffdevicecountScore(offlineCountScore);
-                }
-
-                /**
-                 * 统计  告警流数  指标打分
-                 */
-                AlertFlowCountRatio alertFlowCountRatio = netSegMappper.getAlertCountRatio('"' + segList.get(i) + '"',8-k-1);  // 获取上行速率/平均速率
-
-                // 根据速率判定分数
-                if (alertFlowCountRatio == null) {
                     segAllScore.setAlertflowScore(0.0);
-                }else if (alertFlowCountRatio.getAlertFlowCount() == 0) {  // 速率比平均速率大
-                    segAllScore.setAlertflowScore(95.0);
-                }else {
-                    Double alertCountScore = 80.0 * Math.pow(Math.E, -alertFlowCountRatio.getAlertFlowCount());
-                    segAllScore.setAlertflowScore(alertCountScore);
-                }
-
-                if (segAllScore.getUprateScore().equals(0.0)) {
                     segAllScore.setActiveflowScore(0.0);
-                }else {
-                    segAllScore.setActiveflowScore(95.0);
+                    segScoreEntityVo.setSegAllScore(segAllScore);
+                    System.out.println("走到这里了~");
                 }
-                segScoreEntityVo.setSegAllScore(segAllScore);
 
                 /**
                  * 熵值法计算权重 确定总分
@@ -203,6 +271,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
         List<List<Double>> segAllTimeScoreList = new ArrayList<>();
         List<List<Double>> latestTimeSegDeatils = new ArrayList<>();
+        System.out.println("查看处理结果" + timeRangeScore);
         for(int h = 0;h < segList.size();h++) {
             // 将 各个网段  8个时间段内的总分list(几个网段就有几个list)  分别set进segAllTimeScoreList
             List<Double> seglist = new ArrayList<>();

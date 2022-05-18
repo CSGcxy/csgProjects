@@ -15,7 +15,8 @@
           (SELECT UPRATE/(SELECT ROUND(AVG(UPRATE),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000)) as ratio
         FROM "networksegment"
         WHERE NETWORKSEG = ${segment}
-        AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM "networksegment")-5000*${timeIndex}
+        AND TIMESTAMP >= ${timeIndex}
+        ORDER BY ts
     </select>
 
 
@@ -26,7 +27,8 @@
             (SELECT DOWNRATE/(SELECT ROUND(AVG(DOWNRATE),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000)) as ratio
         FROM "networksegment"
         WHERE NETWORKSEG = ${segment}
-        AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM "networksegment")-5000*${timeIndex}
+        AND TIMESTAMP >= ${timeIndex}
+        ORDER BY ts
     </select>
 
 
@@ -37,7 +39,8 @@
             (SELECT ONDEVICECOUNT/(SELECT ROUND(AVG(ONDEVICECOUNT),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000)) as ratio
         FROM "networksegment"
         WHERE NETWORKSEG = ${segment}
-        AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM "networksegment")-5000*${timeIndex}
+        AND TIMESTAMP >= ${timeIndex}
+        ORDER BY ts
     </select>
 
 
@@ -48,7 +51,8 @@
             (SELECT OFFDEVICECOUNT/(SELECT ROUND(AVG(OFFDEVICECOUNT),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000)) as ratio
         FROM "networksegment"
         WHERE NETWORKSEG = ${segment}
-        AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM "networksegment")-5000*${timeIndex}
+        AND TIMESTAMP >= ${timeIndex}
+        ORDER BY ts
     </select>
 
 
@@ -59,7 +63,8 @@
             (SELECT Alert_flow/(SELECT ROUND(AVG(Alert_flow),3) FROM "networksegment" WHERE NETWORKSEG = ${segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000)) as ratio
         FROM "networksegment"
         WHERE NETWORKSEG = ${segment}
-        AND TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM "networksegment")-5000*${timeIndex}
+        AND TIMESTAMP >= ${timeIndex}
+        ORDER BY ts
     </select>
 
     <select id="getTerminalTotalRateRatio" resultType="com.cxy.assessservice.entity.vo.ratioEntity.TerminalTotalRateRatio">

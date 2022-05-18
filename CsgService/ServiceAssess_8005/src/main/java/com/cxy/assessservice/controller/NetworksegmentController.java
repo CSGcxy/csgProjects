@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class NetworksegmentController {
      */
     @ApiOperation(value = "查询安全评估页面 不同网段的6个指标打分及总分")
     @GetMapping("/getSegAssessScore")
-    public R getAssessScore() {
+    public R getAssessScore() throws ParseException {
 
         SegScoreAllTimeVo segScoreAllTimeVo = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
 
@@ -66,7 +67,7 @@ public class NetworksegmentController {
     @ApiOperation(value = "查询安全评估页面 输入网段 下的速率综合评分倒数前10的终端信息")
     @GetMapping("/getTerminalTotalRateScore/{pageNum}/{pageSize}")
     public R getTerminalTotalRateScore(@PathVariable Integer pageNum,
-                                       @PathVariable Integer pageSize) {
+                                       @PathVariable Integer pageSize) throws ParseException {
 
         SegScoreAllTimeVo  segScoreEntityVoList = networksegmentService.getAllSegScoreDetails();  // 返回各网段的6个指标评分及总分
         PageInfoVo pageInfoVo = networksegmentService.getTerminalScoreDetails(segScoreEntityVoList,pageNum,pageSize);  // 返回各网段的6个指标评分及总分
