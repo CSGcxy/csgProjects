@@ -4,7 +4,7 @@
 
     <select id="getSegList" resultType="java.lang.String">
         SELECT NETWORKSEG FROM "networksegment"
-        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-60000
+        WHERE TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM "networksegment")-600000
         GROUP BY NETWORKSEG
     </select>
 
