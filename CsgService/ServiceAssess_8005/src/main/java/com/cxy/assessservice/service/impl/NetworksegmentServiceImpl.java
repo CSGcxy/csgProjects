@@ -270,7 +270,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
         }
 
         List<List<Double>> segAllTimeScoreList = new ArrayList<>();
-        List<List<Double>> latestTimeSegDeatils = new ArrayList<>();
+        List<List<SegAllScore>> latestTimeSegDeatils = new ArrayList<>();
         System.out.println("查看处理结果" + timeRangeScore);
         for(int h = 0;h < segList.size();h++) {
             // 将 各个网段  8个时间段内的总分list(几个网段就有几个list)  分别set进segAllTimeScoreList
@@ -281,14 +281,16 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
             segAllTimeScoreList.add(seglist);
 
             // 将最新时间段的各个网段打分详情返回
-            List<Double> latestlist = new ArrayList<>();
+            List<SegAllScore> latestlist = new ArrayList<>();
+            SegAllScore segAllScore = new SegAllScore();
+            segAllScore.setUprateScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getUprateScore());
+            segAllScore.setDownrateScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getDownrateScore());
+            segAllScore.setOndevicecountScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOndevicecountScore());
+            segAllScore.setOffdevicecountScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOffdevicecountScore());
+            segAllScore.setAlertflowScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getAlertflowScore());
+            segAllScore.setActiveflowScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getActiveflowScore());
 
-            latestlist.add(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getUprateScore());
-            latestlist.add(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getDownrateScore());
-            latestlist.add(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOndevicecountScore());
-            latestlist.add(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOffdevicecountScore());
-            latestlist.add(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getAlertflowScore());
-            latestlist.add(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getActiveflowScore());
+            latestlist.add(segAllScore);
 
             latestTimeSegDeatils.add(latestlist);
         }
