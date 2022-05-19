@@ -25,5 +25,5 @@ public class SegScoreAllTimeVo {
     List<List<Double>> segAllTimeScoreList;
 
     // 最新时间的各个网段6个指标评分详情
-    List<List<SegAllScore>> latestTimeSegDeatils;
+    List<SegSixScoreVo> latestTimeSegDeatils;
 }

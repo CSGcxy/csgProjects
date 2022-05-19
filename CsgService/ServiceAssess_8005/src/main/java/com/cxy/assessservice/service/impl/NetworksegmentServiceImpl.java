@@ -3,15 +3,13 @@ package com.cxy.assessservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.cxy.assessservice.entity.Networksegment;
-import com.cxy.assessservice.entity.vo.SegAllScore;
-import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
-import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
-import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
+import com.cxy.assessservice.entity.vo.*;
 import com.cxy.assessservice.entity.vo.ratioEntity.*;
 import com.cxy.assessservice.mapper.NetworksegmentMapper;
 import com.cxy.assessservice.service.NetworksegmentService;
 import com.cxy.assessservice.utils.Entroy;
 import com.cxy.assessservice.utils.ListPage;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -270,7 +268,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
         }
 
         List<List<Double>> segAllTimeScoreList = new ArrayList<>();
-        List<List<SegAllScore>> latestTimeSegDeatils = new ArrayList<>();
+        List<SegSixScoreVo> latestTimeSegDeatils = new ArrayList<>();
         System.out.println("查看处理结果" + timeRangeScore);
         for(int h = 0;h < segList.size();h++) {
             // 将 各个网段  8个时间段内的总分list(几个网段就有几个list)  分别set进segAllTimeScoreList
@@ -279,20 +277,243 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                 seglist.add(timeRangeScore.get(h).get(u).getTotalScore());
             }
             segAllTimeScoreList.add(seglist);
+        }
 
+        List<String> quotaList = new ArrayList<>();
+        quotaList.add("LT4G");
+        quotaList.add("Others");
+        quotaList.add("PW");
+        quotaList.add("WX230");
+        quotaList.add("YD4G");
+        quotaList.add("YD5G");
+        quotaList.add("YDWLW");
+        quotaList.add("ZZ");
+
+        for (int e = 0;e < 6;e++) {
             // 将最新时间段的各个网段打分详情返回
-            List<SegAllScore> latestlist = new ArrayList<>();
-            SegAllScore segAllScore = new SegAllScore();
-            segAllScore.setUprateScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getUprateScore());
-            segAllScore.setDownrateScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getDownrateScore());
-            segAllScore.setOndevicecountScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOndevicecountScore());
-            segAllScore.setOffdevicecountScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOffdevicecountScore());
-            segAllScore.setAlertflowScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getAlertflowScore());
-            segAllScore.setActiveflowScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getActiveflowScore());
+//            List<SegSixScoreVo> latestlist = new ArrayList<>();
+            SegSixScoreVo segSixScoreVo = new SegSixScoreVo();
+            if (e == 0) {
+                for (int p1 = 0;p1 < segList.size();p1++) {
+                    if (segList.get(p1).equals("LT4G")) {
+                        segSixScoreVo.setLT4G(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("Others")) {
+                        segSixScoreVo.setOthers(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("PW")) {
+                        segSixScoreVo.setPW(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("WX230")) {
+                        segSixScoreVo.setWX230(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("YD4G")) {
+                        segSixScoreVo.setYD4G(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("YD5G")) {
+                        segSixScoreVo.setYD5G(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("YDWLW")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                    if (segList.get(p1).equals("ZZ")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
+                    }
+                }
+            }
 
-            latestlist.add(segAllScore);
+            if (e == 1) {
+                for (int p2 = 0;p2 < segList.size();p2++) {
+                    if (segList.get(p2).equals("LT4G")) {
+                        segSixScoreVo.setLT4G(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("Others")) {
+                        segSixScoreVo.setOthers(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("PW")) {
+                        segSixScoreVo.setPW(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("WX230")) {
+                        segSixScoreVo.setWX230(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("YD4G")) {
+                        segSixScoreVo.setYD4G(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("YD5G")) {
+                        segSixScoreVo.setYD5G(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("YDWLW")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                    if (segList.get(p2).equals("ZZ")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
+                    }
+                }
+            }
 
-            latestTimeSegDeatils.add(latestlist);
+            if (e == 2) {
+                for (int p3 = 0;p3 < segList.size();p3++) {
+                    if (segList.get(p3).equals("LT4G")) {
+                        segSixScoreVo.setLT4G(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("Others")) {
+                        segSixScoreVo.setOthers(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("PW")) {
+                        segSixScoreVo.setPW(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("WX230")) {
+                        segSixScoreVo.setWX230(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("YD4G")) {
+                        segSixScoreVo.setYD4G(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("YD5G")) {
+                        segSixScoreVo.setYD5G(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("YDWLW")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                    if (segList.get(p3).equals("ZZ")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
+                    }
+                }
+            }
+
+            if (e == 3) {
+                for (int p4 = 0;p4 < segList.size();p4++) {
+                    if (segList.get(p4).equals("LT4G")) {
+                        segSixScoreVo.setLT4G(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("Others")) {
+                        segSixScoreVo.setOthers(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("PW")) {
+                        segSixScoreVo.setPW(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("WX230")) {
+                        segSixScoreVo.setWX230(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("YD4G")) {
+                        segSixScoreVo.setYD4G(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("YD5G")) {
+                        segSixScoreVo.setYD5G(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("YDWLW")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                    if (segList.get(p4).equals("ZZ")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
+                    }
+                }
+            }
+
+            if (e == 4) {
+                for (int p5 = 0;p5 < segList.size();p5++) {
+                    if (segList.get(p5).equals("LT4G")) {
+                        segSixScoreVo.setLT4G(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("Others")) {
+                        segSixScoreVo.setOthers(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("PW")) {
+                        segSixScoreVo.setPW(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("WX230")) {
+                        segSixScoreVo.setWX230(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("YD4G")) {
+                        segSixScoreVo.setYD4G(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("YD5G")) {
+                        segSixScoreVo.setYD5G(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("YDWLW")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                    if (segList.get(p5).equals("ZZ")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
+                    }
+                }
+            }
+
+            if (e == 5) {
+                for (int p6 = 0;p6 < segList.size();p6++) {
+                    if (segList.get(p6).equals("LT4G")) {
+                        segSixScoreVo.setLT4G(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("Others")) {
+                        segSixScoreVo.setOthers(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("PW")) {
+                        segSixScoreVo.setPW(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("WX230")) {
+                        segSixScoreVo.setWX230(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("YD4G")) {
+                        segSixScoreVo.setYD4G(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("YD5G")) {
+                        segSixScoreVo.setYD5G(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("YDWLW")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                    if (segList.get(p6).equals("ZZ")) {
+                        segSixScoreVo.setYDWLW(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
+                    }
+                }
+            }
+
+            quotaList.add("LT4G");
+            quotaList.add("Others");
+            quotaList.add("PW");
+            quotaList.add("WX230");
+            quotaList.add("YD4G");
+            quotaList.add("YD5G");
+            quotaList.add("YDWLW");
+            quotaList.add("ZZ");
+
+
+            if (segSixScoreVo.getLT4G() == null) {
+                segSixScoreVo.setLT4G(0.0);
+            }
+            if (segSixScoreVo.getOthers() == null) {
+                segSixScoreVo.setOthers(0.0);
+            }
+            if (segSixScoreVo.getPW() == null) {
+                segSixScoreVo.setPW(0.0);
+            }
+            if (segSixScoreVo.getWX230() == null) {
+                segSixScoreVo.setWX230(0.0);
+            }
+            if (segSixScoreVo.getYD4G() == null) {
+                segSixScoreVo.setYD4G(0.0);
+            }
+            if (segSixScoreVo.getYD5G() == null) {
+                segSixScoreVo.setYD5G(0.0);
+            }
+            if (segSixScoreVo.getYDWLW() == null) {
+                segSixScoreVo.setYDWLW(0.0);
+            }
+            if (segSixScoreVo.getZZ() == null) {
+                segSixScoreVo.setZZ(0.0);
+            }
+
+//            latestlist.add(segSixScoreVo);
+
+//            segAllScore.setUprateScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getUprateScore());
+//            segAllScore.setDownrateScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getDownrateScore());
+//            segAllScore.setOndevicecountScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOndevicecountScore());
+//            segAllScore.setOffdevicecountScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getOffdevicecountScore());
+//            segAllScore.setAlertflowScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getAlertflowScore());
+//            segAllScore.setActiveflowScore(timeRangeScore.get(h).get(timeRangeScore.get(h).size()-1).getSegAllScore().getActiveflowScore());
+
+//            latestlist.add(segAllScore);
+
+            latestTimeSegDeatils.add(segSixScoreVo);
         }
 
 
