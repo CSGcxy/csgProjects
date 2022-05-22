@@ -5,6 +5,6 @@ xxx监控系统的后端(基于SpringCloud)
 
 http://localhost:8091/checkoff/swagger-ui/index.html
 
-http://localhost:8092/flows/swagger-ui/index.html
+http://localhost:8090/segflow/swagger-ui/index.html
 
 http://localhost:8085/safetyAssessment/swagger-ui/index.html

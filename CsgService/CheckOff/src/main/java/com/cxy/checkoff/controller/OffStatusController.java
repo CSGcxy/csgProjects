@@ -1,7 +1,7 @@
 package com.cxy.checkoff.controller;
 
 import com.cxy.checkoff.service.off.OffStatusService;
-import com.cxy.commonutils.R;
+import com.cxy.commonutils.common.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

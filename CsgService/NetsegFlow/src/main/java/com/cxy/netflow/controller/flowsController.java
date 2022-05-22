@@ -1,6 +1,6 @@
 package com.cxy.netflow.controller;
 
-import com.cxy.commonutils.R;
+import com.cxy.commonutils.common.R;
 import com.cxy.netflow.entity.flows.vo.FlowSankeyVO;
 import com.cxy.netflow.service.flows.FlowsService;
 import io.swagger.annotations.Api;

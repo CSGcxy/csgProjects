@@ -1,18 +1,11 @@
 package com.cxy.assessservice.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cxy.assessservice.entity.SafetyAssess;
 import com.cxy.assessservice.service.SafetyAssessService;
-import com.cxy.commonutils.R;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * <p>

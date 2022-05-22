@@ -27,6 +27,10 @@ spring:
         sqlite2:
           driver-class-name: org.sqlite.JDBC
           url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/flowstatistic_2.db
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.92.128:8848
 
 mybatis-plus:
   configuration:
@@ -36,3 +40,4 @@ mybatis-plus:
   global-config:
     banner: true
   mapper-locations: classpath:com/cxy/netflow/mapper/xml/*.xml
+

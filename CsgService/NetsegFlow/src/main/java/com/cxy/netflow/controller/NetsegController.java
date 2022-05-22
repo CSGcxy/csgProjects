@@ -1,7 +1,7 @@
 package com.cxy.netflow.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cxy.commonutils.R;
+import com.cxy.commonutils.common.R;
 import com.cxy.netflow.entity.netseg.vo.NetSegTotalBytesVO;
 import com.cxy.netflow.entity.netseg.vo.NetSegTotalVO;
 import com.cxy.netflow.service.netseg.NetworksegmentService;

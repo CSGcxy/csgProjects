@@ -1,6 +1,6 @@
 package com.cxy.baseService.handler;
 
-import com.cxy.commonutils.R;
+import com.cxy.commonutils.common.R;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

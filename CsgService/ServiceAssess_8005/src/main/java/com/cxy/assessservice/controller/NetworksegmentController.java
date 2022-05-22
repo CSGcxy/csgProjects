@@ -2,13 +2,9 @@ package com.cxy.assessservice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
-import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
-import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
 import com.cxy.assessservice.service.NetworksegmentService;
-import com.cxy.assessservice.service.SafetyAssessService;
-import com.cxy.commonutils.R;
-import com.github.pagehelper.PageInfo;
+import com.cxy.commonutils.common.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

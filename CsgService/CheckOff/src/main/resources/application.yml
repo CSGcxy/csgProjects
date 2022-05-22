@@ -27,6 +27,10 @@ spring:
         sqlite2:
           driver-class-name: org.sqlite.JDBC
           url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/offterminal.db
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.92.128:8848
 
 mybatis-plus:
   configuration:
@@ -35,4 +39,4 @@ mybatis-plus:
   type-aliases-package: com.cxy.checkoff.entity.check,com.cxy.checkoff.entity.off
   global-config:
     banner: true
-  mapper-locations: classpath:com/cxy/checkoff/mapper/xml/*.xml
+#  mapper-locations: classpath:com/cxy/user/mapper/xml/*.xml
