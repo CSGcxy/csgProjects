@@ -26,15 +26,6 @@ public class TokenLogoutHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String token = request.getHeader("token");
-        if(StringUtils.hasText(token)){
-            try {
-                String userId = JwtUtil.parseJWT(token).getSubject();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authenticationToken.getPrincipal();

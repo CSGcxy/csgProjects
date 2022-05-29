@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Objects;
@@ -31,7 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
+        if (StringUtils.isEmpty(username)) {
+            throw new SysException(AppHttpCodeEnum.REQUIRE_USERNAME);
+        }
         // 根据用户名查询用户信息
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserName, username));
 //        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserName, username));
@@ -39,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //TODO:此处可以对用户的状态再筛选
         if (Objects.isNull(user)) {
 //            throw new ProException(20002, "用户名或密码错误");
-            throw new SysException(AppHttpCodeEnum.NICKNAME_NO_EXIST);
+            throw new SysException(AppHttpCodeEnum.LOGIN_ERROR);
         }
         // TODO 查询对应的权限信息,添加到LoginUser中
         // 写死测试固定权限

@@ -88,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()//除上面的路径外的url，任意用户认证后都可以访问
                 .and()
-                .logout().logoutUrl("/manage/user/logout")
+                .logout().logoutUrl("/user/logout")
                 .addLogoutHandler(new TokenLogoutHandler(redisCache))
                 .and()
                 .addFilterAt(new TokenLoginFilter(authenticationManager(),redisCache),UsernamePasswordAuthenticationFilter.class)

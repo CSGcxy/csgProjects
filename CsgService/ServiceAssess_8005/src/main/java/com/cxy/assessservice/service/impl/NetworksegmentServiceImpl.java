@@ -295,28 +295,28 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
             SegSixScoreVo segSixScoreVo = new SegSixScoreVo();
             if (e == 0) {
                 for (int p1 = 0;p1 < segList.size();p1++) {
-                    if (segList.get(p1).equals("LT4G")) {
+                    if ("LT4G".equals(segList.get(p1))) {
                         segSixScoreVo.setLT4G(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("Others")) {
+                    if ("Others".equals(segList.get(p1))) {
                         segSixScoreVo.setOthers(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("PW")) {
+                    if ("PW".equals(segList.get(p1))) {
                         segSixScoreVo.setPW(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("WX230")) {
+                    if ("WX230".equals(segList.get(p1))) {
                         segSixScoreVo.setWX230(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("YD4G")) {
+                    if ("YD4G".equals(segList.get(p1))) {
                         segSixScoreVo.setYD4G(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("YD5G")) {
+                    if ("YD5G".equals(segList.get(p1))) {
                         segSixScoreVo.setYD5G(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("YDWLW")) {
+                    if ("YDWLW".equals(segList.get(p1))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
-                    if (segList.get(p1).equals("ZZ")) {
+                    if ("ZZ".equals(segList.get(p1))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p1).get(timeRangeScore.get(p1).size()-1).getSegAllScore().getUprateScore());
                     }
                 }
@@ -324,28 +324,28 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
             if (e == 1) {
                 for (int p2 = 0;p2 < segList.size();p2++) {
-                    if (segList.get(p2).equals("LT4G")) {
+                    if ("LT4G".equals(segList.get(p2))) {
                         segSixScoreVo.setLT4G(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("Others")) {
+                    if ("Others".equals(segList.get(p2))) {
                         segSixScoreVo.setOthers(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("PW")) {
+                    if ("PW".equals(segList.get(p2))) {
                         segSixScoreVo.setPW(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("WX230")) {
+                    if ("WX230".equals(segList.get(p2))) {
                         segSixScoreVo.setWX230(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("YD4G")) {
+                    if ("YD4G".equals(segList.get(p2))) {
                         segSixScoreVo.setYD4G(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("YD5G")) {
+                    if ("YD5G".equals(segList.get(p2))) {
                         segSixScoreVo.setYD5G(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("YDWLW")) {
+                    if ("YDWLW".equals(segList.get(p2))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
-                    if (segList.get(p2).equals("ZZ")) {
+                    if ("ZZ".equals(segList.get(p2))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p2).get(timeRangeScore.get(p2).size()-1).getSegAllScore().getDownrateScore());
                     }
                 }
@@ -353,28 +353,28 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
             if (e == 2) {
                 for (int p3 = 0;p3 < segList.size();p3++) {
-                    if (segList.get(p3).equals("LT4G")) {
+                    if ("LT4G".equals(segList.get(p3))) {
                         segSixScoreVo.setLT4G(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("Others")) {
+                    if ("Others".equals(segList.get(p3))) {
                         segSixScoreVo.setOthers(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("PW")) {
+                    if ("PW".equals(segList.get(p3))) {
                         segSixScoreVo.setPW(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("WX230")) {
+                    if ("WX230".equals(segList.get(p3))) {
                         segSixScoreVo.setWX230(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("YD4G")) {
+                    if ("YD4G".equals(segList.get(p3))) {
                         segSixScoreVo.setYD4G(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("YD5G")) {
+                    if ("YD5G".equals(segList.get(p3))) {
                         segSixScoreVo.setYD5G(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("YDWLW")) {
+                    if ("YDWLW".equals(segList.get(p3))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
-                    if (segList.get(p3).equals("ZZ")) {
+                    if ("ZZ".equals(segList.get(p3))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p3).get(timeRangeScore.get(p3).size()-1).getSegAllScore().getOndevicecountScore());
                     }
                 }
@@ -382,28 +382,28 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
             if (e == 3) {
                 for (int p4 = 0;p4 < segList.size();p4++) {
-                    if (segList.get(p4).equals("LT4G")) {
+                    if ("LT4G".equals(segList.get(p4))) {
                         segSixScoreVo.setLT4G(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("Others")) {
+                    if ("Others".equals(segList.get(p4))) {
                         segSixScoreVo.setOthers(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("PW")) {
+                    if ("PW".equals(segList.get(p4))) {
                         segSixScoreVo.setPW(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("WX230")) {
+                    if ("WX230".equals(segList.get(p4))) {
                         segSixScoreVo.setWX230(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("YD4G")) {
+                    if ("YD4G".equals(segList.get(p4))) {
                         segSixScoreVo.setYD4G(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("YD5G")) {
+                    if ("YD5G".equals(segList.get(p4))) {
                         segSixScoreVo.setYD5G(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("YDWLW")) {
+                    if ("YDWLW".equals(segList.get(p4))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
-                    if (segList.get(p4).equals("ZZ")) {
+                    if ("ZZ".equals(segList.get(p4))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p4).get(timeRangeScore.get(p4).size()-1).getSegAllScore().getOffdevicecountScore());
                     }
                 }
@@ -411,28 +411,28 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
             if (e == 4) {
                 for (int p5 = 0;p5 < segList.size();p5++) {
-                    if (segList.get(p5).equals("LT4G")) {
+                    if ("LT4G".equals(segList.get(p5))) {
                         segSixScoreVo.setLT4G(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("Others")) {
+                    if ("Others".equals(segList.get(p5))) {
                         segSixScoreVo.setOthers(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("PW")) {
+                    if ("PW".equals(segList.get(p5))) {
                         segSixScoreVo.setPW(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("WX230")) {
+                    if ("WX230".equals(segList.get(p5))) {
                         segSixScoreVo.setWX230(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("YD4G")) {
+                    if ("YD4G".equals(segList.get(p5))) {
                         segSixScoreVo.setYD4G(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("YD5G")) {
+                    if ("YD5G".equals(segList.get(p5))) {
                         segSixScoreVo.setYD5G(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("YDWLW")) {
+                    if ("YDWLW".equals(segList.get(p5))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
-                    if (segList.get(p5).equals("ZZ")) {
+                    if ("ZZ".equals(segList.get(p5))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p5).get(timeRangeScore.get(p5).size()-1).getSegAllScore().getAlertflowScore());
                     }
                 }
@@ -440,28 +440,28 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
             if (e == 5) {
                 for (int p6 = 0;p6 < segList.size();p6++) {
-                    if (segList.get(p6).equals("LT4G")) {
+                    if ("LT4G".equals(segList.get(p6))) {
                         segSixScoreVo.setLT4G(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("Others")) {
+                    if ("Others".equals(segList.get(p6))) {
                         segSixScoreVo.setOthers(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("PW")) {
+                    if ("PW".equals(segList.get(p6))) {
                         segSixScoreVo.setPW(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("WX230")) {
+                    if ("WX230".equals(segList.get(p6))) {
                         segSixScoreVo.setWX230(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("YD4G")) {
+                    if ("YD4G".equals(segList.get(p6))) {
                         segSixScoreVo.setYD4G(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("YD5G")) {
+                    if ("YD5G".equals(segList.get(p6))) {
                         segSixScoreVo.setYD5G(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("YDWLW")) {
+                    if ("YDWLW".equals(segList.get(p6))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
-                    if (segList.get(p6).equals("ZZ")) {
+                    if ("ZZ".equals(segList.get(p6))) {
                         segSixScoreVo.setYDWLW(timeRangeScore.get(p6).get(timeRangeScore.get(p6).size()-1).getSegAllScore().getActiveflowScore());
                     }
                 }

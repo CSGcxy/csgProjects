@@ -1,13 +1,16 @@
 package com.cxy.security.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.cxy.commonutils.common.R;
+import com.cxy.commonutils.common.ResponseResult;
 import com.cxy.commonutils.common.ResponseUtil;
 import com.cxy.commonutils.utils.JwtUtil;
 import com.cxy.commonutils.utils.RedisCache;
+import com.cxy.commonutils.utils.WebUtils;
 import com.cxy.security.entity.LoginUser;
 import com.cxy.security.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +28,7 @@ import java.rmi.RemoteException;
 import java.util.Objects;
 
 
+@Slf4j
 public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
@@ -35,11 +39,11 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     public TokenLoginFilter(AuthenticationManager authenticationManager,RedisCache redisCache) {
         this.authenticationManager = authenticationManager;
         this.redisCache = redisCache;
-        this.setPostOnly(false);
-//        this.setPasswordParameter("username");
-//        this.setPasswordParameter("pwd");
+//        this.setPostOnly(false);
+        this.setPasswordParameter("username");
+        this.setPasswordParameter("password");
 //        super(new AntPathRequestMatcher("/manage/user/login","POST"));
-        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/manage/user/login","POST"));
+        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/user/login"));
     }
 //
 
@@ -53,7 +57,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //登录表单只支持post,进行验证
-        if(!request.getMethod().equals("POST")){
+        if(!"POST".equals(request.getMethod())){
             throw new AuthenticationServiceException(
                      "Authentication method not supported: " + request.getMethod());
             }
@@ -104,7 +108,6 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        failed.printStackTrace();
-        ResponseUtil.out(response, R.error().message(failed.getMessage()));
+        ResponseUtil.out(response, R.error().message(failed.getLocalizedMessage()));
     }
 }
