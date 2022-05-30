@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.assessservice.mapper.OffTerminalMapper">
+
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalCount
+        FROM IPTerminals
+        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-200
+    </select>
+
+    <select id="getOnlineCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) as onlineCount
+        FROM IPTerminals
+        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-200
+        AND ZDZT = '在线'
+    </select>
+
+    <select id="getExplicitCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) as explicitCount
+        FROM IPTerminals
+        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-200
+        AND ZDZT != '未知'
+    </select>
+
+</mapper>

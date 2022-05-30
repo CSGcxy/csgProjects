@@ -5,6 +5,8 @@ import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
 import com.cxy.assessservice.entity.vo.SegScoreEntityVo;
 import com.cxy.assessservice.entity.vo.TerminalScoreEntityVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
+import com.cxy.assessservice.mapper.NetworksegmentMapper;
+import com.cxy.assessservice.mapper.OffTerminalMapper;
 import com.cxy.assessservice.service.NetworksegmentService;
 import com.cxy.assessservice.service.SafetyAssessService;
 import com.cxy.commonutils.R;
@@ -34,6 +36,9 @@ import java.util.List;
 public class NetworksegmentController {
     @Autowired
     NetworksegmentService networksegmentService;
+
+    @Autowired
+    private OffTerminalMapper offTerminalMapper;
 
     /**
      * <p>测试是否能连接到数据库</p>
@@ -74,6 +79,20 @@ public class NetworksegmentController {
 
         return R.ok().data("pageInfoVo",pageInfoVo);
     }
+
+    /**
+     * <p>根据入参  网段名  查询该网段下总速率评分倒数10名  的终端信息   包括 时间 ip 位置 上行速率 下行速率 总速率 总速率的评分(依据上行速率、下行速率和总速率的评分结合熵值法确定)</p>
+     */
+    @ApiOperation(value = "查询安全评估页面 离线终端offTerminal表 下的最新100条数据 在线终端数和总终端数 以及已知终端类型和总终端数")
+    @GetMapping("/getOnlineAndTypeScore")
+    public R getOnlineAndTypeScore(){
+        Integer totalCount = offTerminalMapper.getTotalCount();   // 返回最新100条数据的终端数(查询条件 Dno-100 出现了97条结果,所以查Dno-100不一定有100个终端)
+        Integer onlineCount = offTerminalMapper.getOnlineCount();  // 返回最新100条数据的在线终端数
+        Integer explicitCount = offTerminalMapper.getExplicitCount();  // 返回最新100条数据的已知类型的终端数
+
+        return R.ok().data("totalCount",totalCount).data("onlineCount",onlineCount).data("explicitCount",explicitCount);
+    }
+
 
 }
 
