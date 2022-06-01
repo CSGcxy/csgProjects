@@ -30,7 +30,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.92.128:8848
+        server-addr: csgnacos.vaiwan.com:80
 
 mybatis-plus:
   configuration:

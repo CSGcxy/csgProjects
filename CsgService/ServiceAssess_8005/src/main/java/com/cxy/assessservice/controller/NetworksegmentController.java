@@ -1,6 +1,7 @@
 package com.cxy.assessservice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cxy.assessservice.api.CheckClientApi;
 import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
 import com.cxy.assessservice.service.NetworksegmentService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 
 
@@ -28,6 +30,16 @@ import java.text.ParseException;
 public class NetworksegmentController {
     @Autowired
     NetworksegmentService networksegmentService;
+
+    @Resource
+    private CheckClientApi checkClientApi;
+
+    @ApiOperation(value = "测试服务的调用")
+    @GetMapping("/testCheck")
+    public R testCheck() {
+//        return checkClientApi.getUnqualifiedPacketCount();
+        return checkClientApi.getUnqualifiedDetails(1, 10);
+    }
 
     /**
      * <p>测试是否能连接到数据库</p>
@@ -68,6 +80,8 @@ public class NetworksegmentController {
 
         return R.ok().data("pageInfoVo",pageInfoVo);
     }
+
+
 
 }
 

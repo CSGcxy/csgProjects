@@ -67,7 +67,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/test/**");
+        web.ignoring().antMatchers("/test/**")
+                .antMatchers("/authenticate",
+                        "/swagger-resources/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs",
+                        "/webjars/**");
     }
 
     @Override
@@ -84,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 对于登录接口 允许匿名访问；即已登录状态是不能访问的
 //                .antMatchers(HttpMethod.POST,"/manage/user/login").anonymous()
                 //permitAll()表示登录和未登录都可以访问
-                .antMatchers("/login").permitAll()
+//                .antMatchers("/swagger-ui/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()//除上面的路径外的url，任意用户认证后都可以访问
                 .and()
