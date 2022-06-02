@@ -37,4 +37,10 @@ public interface PacketCheckMapper extends BaseMapper<TestV1> {
     // 分页查询最近5秒内不合格packet详情
     List<PacketDetailsVo> getUnqualifiedDetails();
 
+    // 查询20s内总包数(用于求正常包分数)
+    Integer getTotalCount();
+
+    // 查询20s内正常包数(用于求正常包分数)
+    Integer getNormalCount();
+
 }

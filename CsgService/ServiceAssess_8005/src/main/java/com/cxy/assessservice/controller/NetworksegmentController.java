@@ -88,18 +88,41 @@ public class NetworksegmentController {
     /**
      *
      */
-    @ApiOperation(value = "查询安全评估页面 离线终端offTerminal表 下的最新100条数据 在线终端数和总终端数 以及已知终端类型和总终端数")
-    @GetMapping("/getOnlineAndTypeScore")
+    @ApiOperation(value = "查询安全评估页面 IPTerminal表中在线终端比例")
+    @GetMapping("/getOnlineIPScore")
     public R getOnlineAndTypeScore(){
         Integer totalCount = offTerminalMapper.getTotalCount();   // 返回最新100条数据的终端数(查询条件 Dno-100 出现了97条结果,所以查Dno-100不一定有100个终端)
-        Integer onlineCount = offTerminalMapper.getOnlineCount();  // 返回最新100条数据的在线终端数
-        Integer explicitCount = offTerminalMapper.getExplicitCount();  // 返回最新100条数据的已知类型的终端数
+        Integer onlineCountIP = offTerminalMapper.getOnlineIPCount();  // 返回最新100条数据的IP终端在线终端数
+        Integer onlineIPScore = 100 * onlineCountIP / totalCount;
 
-        Integer onlineScore = 100 * onlineCount / totalCount;
-        Integer explicitScore = 100 * explicitCount / totalCount;
-        return R.ok().data("onlineScore",onlineScore).data("explicitScore",explicitScore);
+        return R.ok().data("onlineIPScore",onlineIPScore);
     }
 
+    @ApiOperation(value = "查询安全评估页面 NIPTerminal表中在线终端比例")
+    @GetMapping("/getOnlineNIPScore")
+    public R getOnlineNIPScore(){
+        Integer totalCount = offTerminalMapper.getTotalCount();   // 返回最新100条数据的终端数(查询条件 Dno-100 出现了97条结果,所以查Dno-100不一定有100个终端)
+        Integer onlineCountNIP = offTerminalMapper.getOnlineNIPCount();  // 返回最新100条数据的非IP终端在线终端数
 
+        Integer onlineNIPScore = 100 * onlineCountNIP / totalCount;
+        return R.ok().data("onlineNIPScore",onlineNIPScore);
+    }
+
+    @ApiOperation(value = "查询安全评估页面 Terminal表中已知设备终端比例")
+    @GetMapping("/getExplicitScore")
+    public R getExplicitScore(){
+        Integer totalCount = offTerminalMapper.getTotalCount();   // 返回最新100条数据的终端数(查询条件 Dno-100 出现了97条结果,所以查Dno-100不一定有100个终端)
+        Integer ExplicitCount = offTerminalMapper.getExplicitCount();  // 返回最新100条数据的非IP终端在线终端数
+
+        Integer explicitScore = 100 * ExplicitCount / totalCount;
+        return R.ok().data("explicitScore",explicitScore);
+    }
+
+    @ApiOperation(value = "查询正常包比例")
+    @GetMapping("/getPackageScore")
+    public R getPackageScore() {
+//        return checkClientApi.getUnqualifiedPacketCount();
+        return checkClientApi.getPackageScore();
+    }
 }
 

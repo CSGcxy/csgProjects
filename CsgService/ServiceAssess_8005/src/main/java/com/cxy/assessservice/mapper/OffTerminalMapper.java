@@ -25,8 +25,12 @@ public interface OffTerminalMapper extends BaseMapper<Networksegment> {
 
     // 返回最新100条数据的终端数(查询条件 Dno-100 出现了97条结果,所以查Dno-100不一定有100个终端)
     Integer getTotalCount();
-    // 返回最新100条数据的在线终端数
-    Integer getOnlineCount();
+    // 返回最新100条数据的非IP终端在线终端数
+    Integer getOnlineIPCount();
+    // 返回最新100条数据的IP终端在线终端数
+    Integer getOnlineNIPCount();
     // 返回最新100条数据的已知类型的终端数
     Integer getExplicitCount();
+
+
 }

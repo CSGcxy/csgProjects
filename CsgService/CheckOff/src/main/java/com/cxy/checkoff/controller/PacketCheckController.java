@@ -2,6 +2,7 @@ package com.cxy.checkoff.controller;
 
 import com.cxy.checkoff.entity.check.vo.PacketCountVo;
 import com.cxy.checkoff.entity.check.vo.PacketUnQualifiedCount;
+import com.cxy.checkoff.mapper.PacketCheckMapper;
 import com.cxy.checkoff.service.check.PacketCheckService;
 import com.cxy.commonutils.common.R;
 import io.swagger.annotations.Api;
@@ -21,6 +22,9 @@ public class PacketCheckController {
 
     @Autowired
     private PacketCheckService packetCheckService;
+
+    @Autowired
+    private PacketCheckMapper packetCheckMapper;
 
     /**
      * <p>查询最新2秒内不同afn包的数目</p>
@@ -59,5 +63,18 @@ public class PacketCheckController {
     public R getUnqualifiedDetails(@PathVariable("page") Integer page,
                                    @PathVariable("pageSize") Integer pageSize) {
         return R.ok().data("unqualifiedDetails", packetCheckService.getUnqualifiedDetails(page,pageSize));
+    }
+
+    /**
+     * <p>查询合格包比例</p>
+     */
+    @ApiOperation(value = "查询合格包比例")
+    @GetMapping("/getPackageScore")
+    public R getPackageScore(){
+        Integer totalCount = packetCheckMapper.getTotalCount();
+        Integer normalCount = packetCheckMapper.getNormalCount();
+        Integer packageScore = 100 * normalCount / totalCount;
+
+        return R.ok().data("packageScore",packageScore);
     }
 }

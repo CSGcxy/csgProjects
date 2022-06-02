@@ -60,5 +60,17 @@
         WHERE afn!=-1 and ts>(SELECT MAX(ts) FROM "test_v1")-20
     </select>
 
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM "test_v1"
+        WHERE ts>(SELECT MAX(ts) FROM "test_v1")-20
+    </select>
+
+    <select id="getNormalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM "test_v1"
+        WHERE afn > 0 and ts>(SELECT MAX(ts) FROM "test_v1")-20
+    </select>
+
 
 </mapper>

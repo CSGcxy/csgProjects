@@ -5,21 +5,28 @@
     <select id="getTotalCount" resultType="java.lang.Integer">
         SELECT COUNT(*) as totalCount
         FROM IPTerminals
-        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-200
+        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-500
     </select>
 
-    <select id="getOnlineCount" resultType="java.lang.Integer">
-        SELECT COUNT(*) as onlineCount
+    <select id="getOnlineIPCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) as onlineIPCount
         FROM IPTerminals
-        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-200
-          AND ZDZT = '在线'
+        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-500
+        AND ZDZT = '在线'
+    </select>
+
+    <select id="getOnlineNIPCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) as onlineNIPCount
+        FROM NIPTerminals
+        WHERE Dno > (SELECT MAX(Dno) FROM "NIPTerminals")-500
+        AND ZDZT = '在线'
     </select>
 
     <select id="getExplicitCount" resultType="java.lang.Integer">
         SELECT COUNT(*) as explicitCount
         FROM IPTerminals
-        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-200
-          AND ZDZT != '未知'
+        WHERE Dno > (SELECT MAX(Dno) FROM "IPTerminals")-500
+        AND ZDZT != '未知'
     </select>
 
 </mapper>

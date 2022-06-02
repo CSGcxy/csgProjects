@@ -17,4 +17,7 @@ public interface CheckClientApi {
 
     @GetMapping("/checkoff/checkFormat/getUnqualifiedPacketCount")
     public R getUnqualifiedPacketCount();
+
+    @GetMapping("/checkoff/checkFormat/getPackageScore")
+    R getPackageScore();
 }
