@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cxy.assessservice.api.CheckClientApi;
 import com.cxy.assessservice.entity.vo.SegScoreAllTimeVo;
 import com.cxy.assessservice.entity.vo.ratioEntity.PageInfoVo;
+import com.cxy.assessservice.mapper.OffTerminalMapper;
 import com.cxy.assessservice.service.NetworksegmentService;
 import com.cxy.commonutils.common.R;
 import io.swagger.annotations.Api;
@@ -30,6 +31,9 @@ import java.text.ParseException;
 public class NetworksegmentController {
     @Autowired
     NetworksegmentService networksegmentService;
+
+    @Autowired
+    private OffTerminalMapper offTerminalMapper;
 
     @Resource
     private CheckClientApi checkClientApi;
@@ -81,6 +85,20 @@ public class NetworksegmentController {
         return R.ok().data("pageInfoVo",pageInfoVo);
     }
 
+    /**
+     *
+     */
+    @ApiOperation(value = "查询安全评估页面 离线终端offTerminal表 下的最新100条数据 在线终端数和总终端数 以及已知终端类型和总终端数")
+    @GetMapping("/getOnlineAndTypeScore")
+    public R getOnlineAndTypeScore(){
+        Integer totalCount = offTerminalMapper.getTotalCount();   // 返回最新100条数据的终端数(查询条件 Dno-100 出现了97条结果,所以查Dno-100不一定有100个终端)
+        Integer onlineCount = offTerminalMapper.getOnlineCount();  // 返回最新100条数据的在线终端数
+        Integer explicitCount = offTerminalMapper.getExplicitCount();  // 返回最新100条数据的已知类型的终端数
+
+        Integer onlineScore = 100 * onlineCount / totalCount;
+        Integer explicitScore = 100 * explicitCount / totalCount;
+        return R.ok().data("onlineScore",onlineScore).data("explicitScore",explicitScore);
+    }
 
 
 }
