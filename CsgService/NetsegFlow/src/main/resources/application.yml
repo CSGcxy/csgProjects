@@ -30,7 +30,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: csgnacos.vaiwan.com:80
+        server-addr: 103.131.169.220:8848
+#        ip: 192.168.92.128
 
 mybatis-plus:
   configuration:
@@ -41,3 +42,6 @@ mybatis-plus:
     banner: true
   mapper-locations: classpath:com/cxy/netflow/mapper/xml/*.xml
 
+# 日志保存目录
+log_path:
+  logs/netflow

@@ -17,6 +17,13 @@
             <artifactId>common_utils</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+<!--        &lt;!&ndash;swagger第三方UI,作者新版本改为knift4j,为了配合微服务框架,有了很多高级特性&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>swagger-bootstrap-ui</artifactId>-->
+<!--            <version>1.9.6</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>

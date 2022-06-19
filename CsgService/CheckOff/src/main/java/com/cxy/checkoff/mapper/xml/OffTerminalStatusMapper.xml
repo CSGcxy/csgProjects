@@ -5,10 +5,10 @@
     <select id="getOffterminalCount" resultType="OffTerminalCount">
         SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp ,COUNT(TIMESTAMP) AS offTerminalCount
         FROM OffTerminals
-        WHERE TIMESTAMP >= (SELECT STRFTIME('%s', 'now')*1000-60000)
+        WHERE TIMESTAMP >= (SELECT MAX(TIMESTAMP) FROM OffTerminals) -60000
         GROUP BY TIMESTAMP
     </select>
-
+    <!--    WHERE TIMESTAMP >= (SELECT STRFTIME('%s', 'now')*1000-60000)-->
     <select id="getOffterminalManufactor" resultType="OffTerminalManufactor">
         SELECT ZDCJ as manufactor, COUNT(ZDCJ) as offTerminalCount
         FROM "OffTerminals"
@@ -40,10 +40,10 @@
     <select id="getOffTerminalSegTimeSequence" resultType="OffTerminalCount">
         SELECT DATETIME(TIMESTAMP/1000,'unixepoch','localtime') as timestamp,COUNT(ZDLB) as offTerminalCount
         FROM "OffTerminals"
-        WHERE ZDLB = #{segment} AND TIMESTAMP>= (SELECT STRFTIME('%s', 'now')*1000-60000)
+        WHERE ZDLB = #{segment} AND TIMESTAMP>= (SELECT MAX(TIMESTAMP) FROM OffTerminals) - 60000
         GROUP BY TIMESTAMP
         ORDER BY TIMESTAMP
     </select>
-
+    <!--WHERE ZDLB = #{segment} AND TIMESTAMP>= (SELECT STRFTIME('%s', 'now')*1000-60000)-->
 
 </mapper>

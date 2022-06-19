@@ -23,14 +23,15 @@ spring:
       datasource:
         sqlite1:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:D:/Laboratory/Project/csgBackEnd/test1.db
+          url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/test1.db
         sqlite2:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:D:/Laboratory/Project/csgBackEnd/offterminal.db
+          url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/offterminal.db
   cloud:
     nacos:
       discovery:
-        server-addr: csgnacos.vaiwan.com:80
+        server-addr: 103.131.169.220:8848
+#        ip: 192.168.92.128
 
 mybatis-plus:
   configuration:
@@ -40,3 +41,7 @@ mybatis-plus:
   global-config:
     banner: true
   mapper-locations: classpath:com/cxy/checkoff/mapper/xml/*.xml
+
+# 日志保存目录
+log_path:
+  logs/checkoff

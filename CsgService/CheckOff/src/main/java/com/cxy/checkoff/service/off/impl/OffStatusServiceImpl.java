@@ -26,7 +26,7 @@ public class OffStatusServiceImpl extends ServiceImpl<OffTerminalStatusMapper, O
     @Autowired
     private OffTerminalStatusMapper offTerminalStatusMapper;
 
-    //查询networkSegment表中的网段名
+    //查询不同时刻 的 离线终端数
     @Override
     public OffTerminalCountVO getOffterminalCount() {
 
