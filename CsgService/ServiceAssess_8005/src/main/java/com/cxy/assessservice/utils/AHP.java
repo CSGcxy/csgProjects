@@ -88,16 +88,16 @@ public class AHP {
                 sumR=sumR+bw[i]/(6*w[i]);
             }
             Double ci=(sumR-6)/(6-1);                //矩阵一致性指标
-            System.out.println("计算出的矩阵一致性指标"+ci+"\n");
+//            System.out.println("计算出的矩阵一致性指标"+ci+"\n");
             Double cr=ci/1.24;                        //随机一致性比率 1.24为6阶矩阵的平均一致性指标
-            if(cr>=0.1){
-                System.out.println("权重设置不合理");
-            }else{
-                //输出特征向量
-                for(int i=0;i<6;i++){
-                    System.out.println("特征"+i+"的权重："+w[i]);
-                }
-            }
+//            if(cr>=0.1){
+//                System.out.println("权重设置不合理");
+//            }else{
+//                //输出特征向量
+//                for(int i=0;i<6;i++){
+//                    System.out.println("特征"+i+"的权重："+w[i]);
+//                }
+//            }
             return w;
         }
     }

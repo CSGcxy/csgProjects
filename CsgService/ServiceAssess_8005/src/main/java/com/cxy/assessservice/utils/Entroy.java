@@ -11,9 +11,9 @@ public class Entroy {
         List<Double> gList = new ArrayList<Double>();	//用于存放每种指标的差异系数
         List<Double> wList = new ArrayList<Double>();	//用于存放每种指标的最终权重系数
 
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
-        }
+//        for (int i = 0; i < list.size(); i++) {
+//            System.out.println(list.get(i));
+//        }
 
         double sumLast = 0;
         double k = 1 / Math.log(list.get(0).size()); //计算k值 k= 1/ln(n)

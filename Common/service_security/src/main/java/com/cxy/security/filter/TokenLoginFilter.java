@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.cxy.commonutils.common.R;
 import com.cxy.commonutils.common.ResponseResult;
 import com.cxy.commonutils.common.ResponseUtil;
+import com.cxy.commonutils.enums.AppHttpCodeEnum;
 import com.cxy.commonutils.utils.JwtUtil;
 import com.cxy.commonutils.utils.RedisCache;
 import com.cxy.commonutils.utils.WebUtils;
 import com.cxy.security.entity.LoginUser;
 import com.cxy.security.entity.User;
+import com.cxy.security.entity.UserVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -59,12 +62,24 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         //登录表单只支持post,进行验证
         if(!"POST".equals(request.getMethod())){
             throw new AuthenticationServiceException(
-                     "Authentication method not supported: " + request.getMethod());
-            }
+                     "Authentication method not supported: " + request.getMethod()
+            );
+        }
+        //验证码验证
+        String captcha = (String) request.getSession().getAttribute("captcha");
+
 
         //获取表单提交数据
         try {
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+//            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            UserVO user = new ObjectMapper().readValue(request.getInputStream(), UserVO.class);
+            String code = user.getCode();
+            log.info("code:" + code);
+            if(StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(code)){
+                ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.NOT_POST_CATCHA);
+                WebUtils.renderString(response, JSON.toJSONString(result));
+                throw new RuntimeException(result.getMsg());
+            }
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword())
             );

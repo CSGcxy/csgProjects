@@ -17,6 +17,7 @@ public enum AppHttpCodeEnum {
     EXPIRE_LOGIN(402,"登录过期，需重新登录"),
     NO_OPERATOR_AUTH(403,"无权限操作"),
     NOT_POST_HANDLER(405,"登录请求不能用非POST请求"),
+    NOT_POST_CATCHA(406,"验证码输入有误"),
 
     SYSTEM_ERROR(500,"服务器出现错误"),
     USERNAME_EXIST(501,"用户名已存在"),

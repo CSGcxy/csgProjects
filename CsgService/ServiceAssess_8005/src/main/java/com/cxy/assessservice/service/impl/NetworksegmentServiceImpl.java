@@ -46,12 +46,12 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
         // 查询最近5s*10=50s的时间数组
         List<String> timeArray = netSegMappper.getTimeArray();
-        System.out.println("最早时间为" + timeArray.get(0));
+//        System.out.println("最早时间为" + timeArray.get(0));
         // 取出该数组中最早的时间
         String earliestTimestr = timeArray.get(0);
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Long earliestTime = df.parse(earliestTimestr).getTime();
-        System.out.println("---------最早时间：" + earliestTime);
+//        System.out.println("---------最早时间：" + earliestTime);
 
         // 查询10分钟内出现的网段
         List<String> segList = netSegMappper.getSegList();
@@ -89,7 +89,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
             alertFlowCountRatioList = netSegMappper.getAlertCountRatio('"' + segList.get(i) + '"',earliestTime);  // 获取上行速率/平均速率
 
 
-            System.out.println(upRateRatioList);
+//            System.out.println(upRateRatioList);
 
             // 返回10个时间段的数据  8个网段评分
             for (int k = 0;k < 8;k++) {
@@ -99,7 +99,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                 SegAllScore segAllScore = new SegAllScore();
 
 
-                System.out.println("查看本次遍历的时间" + timeArray.get(k));
+//                System.out.println("查看本次遍历的时间" + timeArray.get(k));
                 int curIndex = 10;
                 for (int v = 0;v < upRateRatioList.size();v++) {
                     if (upRateRatioList.get(v).getTs().equals(timeArray.get(k))) {
@@ -109,10 +109,10 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                 }
 
                 if (curIndex != 10) {
-                    System.out.println("查看本次查询到的时间" + upRateRatioList.get(curIndex).getTs());
+//                    System.out.println("查看本次查询到的时间" + upRateRatioList.get(curIndex).getTs());
                 }
 
-                System.out.println("查看" + curIndex);
+//                System.out.println("查看" + curIndex);
 
                 if (curIndex != 10) {
 
@@ -226,7 +226,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
                     segAllScore.setAlertflowScore(0.0);
                     segAllScore.setActiveflowScore(0.0);
                     segScoreEntityVo.setSegAllScore(segAllScore);
-                    System.out.println("走到这里了~");
+//                    System.out.println("走到这里了~");
                 }
 
                 /**
@@ -269,7 +269,7 @@ public class NetworksegmentServiceImpl extends ServiceImpl<NetworksegmentMapper,
 
         List<List<Double>> segAllTimeScoreList = new ArrayList<>();
         List<SegSixScoreVo> latestTimeSegDeatils = new ArrayList<>();
-        System.out.println("查看处理结果" + timeRangeScore);
+//        System.out.println("查看处理结果" + timeRangeScore);
         for(int h = 0;h < segList.size();h++) {
             // 将 各个网段  8个时间段内的总分list(几个网段就有几个list)  分别set进segAllTimeScoreList
             List<Double> seglist = new ArrayList<>();

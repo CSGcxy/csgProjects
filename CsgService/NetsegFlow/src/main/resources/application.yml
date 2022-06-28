@@ -23,15 +23,15 @@ spring:
       datasource:
         sqlite1:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/networksegment_2.db
+          url: jdbc:sqlite:/opt/netflow/networksegment_2.db
         sqlite2:
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:I:/Projects/testSql/dynamicGetV03/flowstatistic_2.db
+          url: jdbc:sqlite:/opt/netflow/flowstatistic_2.db
   cloud:
     nacos:
       discovery:
-        server-addr: 103.131.169.220:8848
-#        ip: 192.168.92.128
+        server-addr: 10.10.15.79:8848
+        ip: 10.10.15.79
 
 mybatis-plus:
   configuration:
@@ -44,4 +44,4 @@ mybatis-plus:
 
 # 日志保存目录
 log_path:
-  logs/netflow
+  /logs/netflow

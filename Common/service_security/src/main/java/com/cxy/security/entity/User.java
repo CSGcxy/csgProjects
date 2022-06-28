@@ -44,6 +44,8 @@ public class User implements Serializable {
      */
     private String password;
 
+
+
     /**
      * 账号状态（0正常 1停用）
      */
